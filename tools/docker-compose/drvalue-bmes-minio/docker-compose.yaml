@@ -1,0 +1,136 @@
+version: '3.8'
+services:
+  haproxyminio:
+    image: haproxy:2.6
+    container_name: drvalue_bmes_haproxy_minio
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - '9000:9000' # API port
+      - '9001:9001' # Console port
+    depends_on:
+      - minio1
+      - minio2
+      - minio3
+      - minio4
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks:
+      - drvalue_bmes_backend_net
+
+  minio1:
+    hostname: minio1
+    container_name: drvalue_bmes_minio1
+    image: bitnamilegacy/minio:2024.12.18
+    ports:
+      - '9010:9000' # API port
+      - '9011:9001' # Console port
+    volumes:
+      - ./data_mnt_minio1:/bitnami/minio/data
+    environment:
+      - MINIO_DEFAULT_BUCKETS=nx-cms-bucket
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_DISTRIBUTED_MODE_ENABLED=yes
+      - MINIO_DISTRIBUTED_NODES=minio1,minio2,minio3,minio4
+      - MINIO_SKIP_CLIENT=yes
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks:
+      - drvalue_bmes_backend_net
+
+  minio2:
+    hostname: minio2
+    container_name: drvalue_bmes_minio2
+    image: bitnamilegacy/minio:2024.12.18
+    ports:
+      - '9020:9000' # API port
+      - '9021:9001' # Console port
+    volumes:
+      - ./data_mnt_minio2:/bitnami/minio/data
+    environment:
+      - MINIO_DEFAULT_BUCKETS=nx-cms-bucket
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_DISTRIBUTED_MODE_ENABLED=yes
+      - MINIO_DISTRIBUTED_NODES=minio1,minio2,minio3,minio4
+      - MINIO_SKIP_CLIENT=yes
+    depends_on:
+      - minio1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks:
+      - drvalue_bmes_backend_net
+
+  minio3:
+    hostname: minio3
+    container_name: drvalue_bmes_minio3
+    image: bitnamilegacy/minio:2024.12.18
+    ports:
+      - '9030:9000' # API port
+      - '9031:9001' # Console port
+    volumes:
+      - ./data_mnt_minio3:/bitnami/minio/data
+    environment:
+      - MINIO_DEFAULT_BUCKETS=nx-cms-bucket
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_DISTRIBUTED_MODE_ENABLED=yes
+      - MINIO_DISTRIBUTED_NODES=minio1,minio2,minio3,minio4
+      - MINIO_SKIP_CLIENT=yes
+    depends_on:
+      - minio1
+      - minio2
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks:
+      - drvalue_bmes_backend_net
+
+  minio4:
+    hostname: minio4
+    container_name: drvalue_bmes_minio4
+    image: bitnamilegacy/minio:2024.12.18
+    ports:
+      - '9040:9000' # API port
+      - '9041:9001' # Console port
+    volumes:
+      - ./data_mnt_minio4:/bitnami/minio/data
+    environment:
+      - MINIO_DEFAULT_BUCKETS=nx-cms-bucket
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_DISTRIBUTED_MODE_ENABLED=yes
+      - MINIO_DISTRIBUTED_NODES=minio1,minio2,minio3,minio4
+      - MINIO_SKIP_CLIENT=yes
+    depends_on:
+      - minio1
+      - minio2
+      - minio3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks:
+      - drvalue_bmes_backend_net
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

@@ -1,0 +1,164 @@
+{
+  "index_patterns": ["chat-msg-*"],
+  "priority": 10,
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "index": {
+        "max_ngram_diff": 10
+      },
+      "analysis": {
+        "analyzer": {
+          "ko_analyzer": { "type": "nori" },
+          "zh_analyzer": { "type": "smartcn" },
+          "cjk_analyzer": { "type": "cjk" },
+
+          "edge_ngram_analyzer": {
+            "tokenizer": "edge_ngram_tokenizer",
+            "filter": ["lowercase"]
+          },
+
+          "ngram_analyzer": {
+            "tokenizer": "ngram_tokenizer",
+            "filter": ["lowercase"]
+          }
+        },
+        "tokenizer": {
+          "edge_ngram_tokenizer": {
+            "type": "edge_ngram",
+            "min_gram": 2,
+            "max_gram": 12,
+            "token_chars": ["letter", "digit"]
+          },
+          "ngram_tokenizer": {
+            "type": "ngram",
+            "min_gram": 2,
+            "max_gram": 12,
+            "token_chars": ["letter", "digit"]
+          }
+        },
+        "char_filter": {
+          "digits_only_cf": {
+            "type": "pattern_replace",
+            "pattern": "[^0-9]",
+            "replacement": ""
+          }
+        },
+        "normalizer": {
+          "digits_only": {
+            "type": "custom",
+            "char_filter": ["digits_only_cf"],
+            "filter": ["lowercase"]
+          }
+        }
+      }
+    },
+    "mappings": {
+      "_source": { "excludes": ["content"] },
+      "properties": {
+        "tenantId": { "type": "keyword" },
+        "roomId": { "type": "keyword" },
+        "messageId": { "type": "keyword" },
+        "createdAt": { "type": "date" },
+
+        "all": { "type": "text", "analyzer": "standard" },
+
+        "content": {
+          "type": "text",
+          "analyzer": "standard",
+          "copy_to": ["all"],
+          "fields": {
+            "ko": { "type": "text", "analyzer": "ko_analyzer" },
+            "zh": { "type": "text", "analyzer": "zh_analyzer" },
+            "cjk": { "type": "text", "analyzer": "cjk_analyzer" },
+            "ngram": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "userNum": {
+          "type": "keyword",
+          "ignore_above": 256,
+          "copy_to": ["all"],
+          "fields": {
+            "text": {
+              "type": "text",
+              "analyzer": "edge_ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "roomNum": {
+          "type": "keyword",
+          "ignore_above": 256,
+          "copy_to": ["all"],
+          "fields": {
+            "text": {
+              "type": "text",
+              "analyzer": "edge_ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "customerName": {
+          "type": "text",
+          "analyzer": "ko_analyzer",
+          "copy_to": ["all"],
+          "fields": {
+            "keyword": { "type": "keyword", "ignore_above": 256 },
+            "ngram": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "userNum2": {
+          "type": "keyword",
+          "ignore_above": 256,
+          "copy_to": ["all"],
+          "fields": {
+            "text": {
+              "type": "text",
+              "analyzer": "edge_ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "userNum3": {
+          "type": "keyword",
+          "ignore_above": 256,
+          "copy_to": ["all"],
+          "fields": {
+            "text": {
+              "type": "text",
+              "analyzer": "edge_ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        },
+
+        "customerPhone": {
+          "type": "keyword",
+          "normalizer": "digits_only",
+          "copy_to": ["all"],
+          "fields": {
+            "text": {
+              "type": "text",
+              "analyzer": "edge_ngram_analyzer",
+              "search_analyzer": "standard"
+            }
+          }
+        }
+      }
+    }
+  }
+}

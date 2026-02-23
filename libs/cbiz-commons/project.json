@@ -1,0 +1,9 @@
+{
+  "name": "cbiz-commons",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/cbiz-commons/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project cbiz-commons --web",
+  "targets": {}
+}

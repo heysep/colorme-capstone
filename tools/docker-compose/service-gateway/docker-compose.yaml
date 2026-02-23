@@ -1,0 +1,27 @@
+# docker-compose.service-gateway.yml
+version: '3.8'
+services:
+  service-gateway:
+    build:
+      context: ${APP_ROOT_PATH}
+      dockerfile: tools/docker-compose/service.Dockerfile
+      args:
+        SERVICE_NAME: service-gateway
+    container_name: service-gateway
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${APP_ROOT_PATH}/apps:/app/apps
+      - ${APP_ROOT_PATH}/libs:/app/libs
+      - ${APP_ROOT_PATH}/resources:/app/resources
+    environment:
+      - DOPPLER_TOKEN=${DOPPLER_TOKEN_CUSTOM}
+      - DOPPLER_PROJECT=drvalue-bmes-backend
+      - DOPPLER_CONFIG=prd
+    ports:
+      - '3300:3300'
+    networks:
+      - drvalue_bmes_backend_net
+networks:
+  drvalue_bmes_backend_net:
+    external: true

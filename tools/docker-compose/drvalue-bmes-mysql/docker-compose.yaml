@@ -1,0 +1,147 @@
+version: '3.8'
+services:
+  db1:
+    image: bitnamilegacy/mariadb-galera:11.4.4
+    container_name: drvalue_bmes_db1
+    environment:
+      - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_GALERA_CLUSTER_NAME=galera_cluster
+      - MARIADB_GALERA_CLUSTER_ADDRESS=gcomm://db1,db2,db3
+      - MARIADB_GALERA_CLUSTER_BOOTSTRAP=yes
+      - MARIADB_GALERA_FORCE_SAFETOBOOTSTRAP=yes
+      - MARIADB_GALERA_MARIABACKUP_USER=${MARIADB_GALERA_MARIABACKUP_USER}
+      - MARIADB_GALERA_MARIABACKUP_PASSWORD=${MARIADB_GALERA_MARIABACKUP_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_ENABLE_SLOW_QUERY=1
+      - MARIADB_LONG_QUERY_TIME=5.0
+      - MARIADB_EXTRA_FLAGS=--wait_timeout=3600 --interactive_timeout=3600 --net_read_timeout=60 --net_write_timeout=60 --innodb_buffer_pool_size=2G --query_cache_size=256M --innodb_flush_method=O_DIRECT
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          '/opt/bitnami/mariadb/bin/mysql -h127.0.0.1 -u"$MARIADB_ROOT_USER" -p"$MARIADB_ROOT_PASSWORD" -Nse "SELECT VARIABLE_VALUE FROM INFORMATION_SCHEMA.GLOBAL_STATUS WHERE VARIABLE_NAME=''wsrep_cluster_status''" 2>/dev/null | grep -q ''^Primary$''',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data_mnt_db1:/bitnami/mariadb
+    networks:
+      - drvalue_bmes_backend_net
+
+  db2:
+    image: bitnamilegacy/mariadb-galera:11.4.4
+    container_name: drvalue_bmes_db2
+    depends_on:
+      - db1
+    environment:
+      - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_GALERA_CLUSTER_NAME=galera_cluster
+      - MARIADB_GALERA_CLUSTER_ADDRESS=gcomm://db1,db2,db3
+      - MARIADB_GALERA_CLUSTER_BOOTSTRAP=no
+      - MARIADB_GALERA_FORCE_SAFETOBOOTSTRAP=no
+      - MARIADB_GALERA_MARIABACKUP_USER=${MARIADB_GALERA_MARIABACKUP_USER}
+      - MARIADB_GALERA_MARIABACKUP_PASSWORD=${MARIADB_GALERA_MARIABACKUP_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_ENABLE_SLOW_QUERY=1
+      - MARIADB_LONG_QUERY_TIME=5.0
+      - MARIADB_EXTRA_FLAGS=--wait_timeout=3600 --interactive_timeout=3600 --net_read_timeout=60 --net_write_timeout=60 --innodb_buffer_pool_size=2G --query_cache_size=256M --innodb_flush_method=O_DIRECT
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          '/opt/bitnami/mariadb/bin/mysql -h127.0.0.1 -u"$MARIADB_ROOT_USER" -p"$MARIADB_ROOT_PASSWORD" -Nse "SELECT VARIABLE_VALUE FROM INFORMATION_SCHEMA.GLOBAL_STATUS WHERE VARIABLE_NAME=''wsrep_cluster_status''" 2>/dev/null | grep -q ''^Primary$''',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./data_mnt_db2:/bitnami/mariadb
+    networks:
+      - drvalue_bmes_backend_net
+
+  db3:
+    image: bitnamilegacy/mariadb-galera:11.4.4
+    container_name: drvalue_bmes_db3
+    depends_on:
+      - db1
+    environment:
+      - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_GALERA_CLUSTER_NAME=galera_cluster
+      - MARIADB_GALERA_CLUSTER_ADDRESS=gcomm://db1,db2,db3
+      - MARIADB_GALERA_CLUSTER_BOOTSTRAP=no
+      - MARIADB_GALERA_FORCE_SAFETOBOOTSTRAP=no
+      - MARIADB_GALERA_MARIABACKUP_USER=${MARIADB_GALERA_MARIABACKUP_USER}
+      - MARIADB_GALERA_MARIABACKUP_PASSWORD=${MARIADB_GALERA_MARIABACKUP_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_ENABLE_SLOW_QUERY=1
+      - MARIADB_LONG_QUERY_TIME=5.0
+      - MARIADB_EXTRA_FLAGS=--wait_timeout=3600 --interactive_timeout=3600 --net_read_timeout=60 --net_write_timeout=60 --innodb_buffer_pool_size=2G --query_cache_size=256M --innodb_flush_method=O_DIRECT
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          '/opt/bitnami/mariadb/bin/mysql -h127.0.0.1 -u"$MARIADB_ROOT_USER" -p"$MARIADB_ROOT_PASSWORD" -Nse "SELECT VARIABLE_VALUE FROM INFORMATION_SCHEMA.GLOBAL_STATUS WHERE VARIABLE_NAME=''wsrep_cluster_status''" 2>/dev/null | grep -q ''^Primary$''',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    ports:
+      - '3308:3306'
+    volumes:
+      - ./data_mnt_db3:/bitnami/mariadb
+    networks:
+      - drvalue_bmes_backend_net
+
+  logdb:
+    image: bitnamilegacy/mariadb:11.4.4
+    container_name: drvalue_bmes_logdb
+    environment:
+      - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_ENABLE_SLOW_QUERY=1
+      - MARIADB_LONG_QUERY_TIME=2.0
+      # 로그성 쓰기 부하 대응용 튜닝 (지연/내구성 트레이드오프)
+      #  - innodb_flush_log_at_trx_commit=2 : 커밋당 fsync 안함(초당 1회)
+      #  - sync_binlog=0, skip-log-bin     : 바이너리 로그 비활성화(복제 안쓸 경우)
+      #  - innodb_log_file_size=2G         : redo 로그 크게 (일괄쓰기 효율)
+      #  - O_DIRECT                         : 더블버퍼링 방지
+      #  - 버퍼풀/오픈파일/연결수 상향
+      - MARIADB_EXTRA_FLAGS=--innodb_flush_log_at_trx_commit=2 --sync_binlog=0 --skip-log-bin --innodb_flush_method=O_DIRECT --innodb_log_file_size=2G --innodb_log_buffer_size=64M --innodb_buffer_pool_size=2G --table_open_cache=4096 --open_files_limit=65535 --max_connections=600 --wait_timeout=3600 --interactive_timeout=3600 --net_read_timeout=60 --net_write_timeout=60
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          '/opt/bitnami/mariadb/bin/mysql -h127.0.0.1 -u"$MARIADB_ROOT_USER" -p"$MARIADB_ROOT_PASSWORD" -Nse "SELECT 1" >/dev/null 2>&1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    ports:
+      - '3315:3306'
+    volumes:
+      - ./data_mnt_logdb:/bitnami/mariadb
+      - ./initdb-logdb:/docker-entrypoint-initdb.d:ro
+    networks:
+      - drvalue_bmes_backend_net
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

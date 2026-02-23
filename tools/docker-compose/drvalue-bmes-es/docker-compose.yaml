@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  elasticsearch-root:
+    container_name: 'drvalue_bmes_es'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION:-7.10.2}'
+    environment:
+      - cluster.name=${ES_CLUSTER_NAME:-es-docker-cluster}
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=${ES_JAVA_OPTS:--Xms2g -Xmx2g -Dlog4j2.formatMsgNoLookups=true}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.license.self_generated.type=basic
+
+      # 필수: elastic 비밀번호
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:?set_me}
+
+      # 플러그인 (콤마 구분)
+      - INSTALL_PLUGINS=${INSTALL_PLUGINS:-analysis-nori,analysis-smartcn,analysis-icu}
+
+      # 템플릿/인덱스 파일 경로 & 인덱스 이름
+      - ES_TEMPLATE_FILE=/usr/share/elasticsearch/config/chat_messages_template.json
+      - ES_INDEX_NAME=${ES_INDEX_NAME:-chat-msg-test}
+
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+    volumes:
+      # 템플릿 JSON
+      - ./chat_messages_template.json:/usr/share/elasticsearch/config/chat_messages_template.json:ro
+      # 초기화 스크립트(권한 +x 필요)
+      - ./elasticsearch-init.sh:/usr/share/elasticsearch/elasticsearch-init.sh:ro
+      # 데이터 볼륨
+      - ./data_mnt_es/data:/usr/share/elasticsearch/data
+
+    ports:
+      - '3401:9200'
+      - '3402:9300'
+
+    restart: 'always'
+    stdin_open: true
+    tty: true
+
+    # 초기화 스크립트를 엔트리포인트로
+    entrypoint: ['/bin/bash', '/usr/share/elasticsearch/elasticsearch-init.sh']
+
+    # (선택) 헬스체크
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl -s -u elastic:${ELASTIC_PASSWORD} http://localhost:9200 >/dev/null || exit 1',
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    networks:
+      - drvalue_bmes_backend_net
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

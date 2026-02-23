@@ -1,0 +1,202 @@
+version: '3.8'
+
+services:
+  redisnode0:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_0
+    volumes:
+      - ./data_mnt_redis/data/node-0:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes' # 내부 전용은 yes
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode0'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT}:6379'
+      - '${REDIS_PORT}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' \
+          | awk -F: '/^cluster_state:/{print $2}' \
+          | grep -qx ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+  redisnode1:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_1
+    volumes:
+      - ./data_mnt_redis/data/node-1:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes'
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode1'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT_1}:6379'
+      - '${REDIS_PORT_1}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' \
+          | awk -F: '/^cluster_state:/{print $2}' \
+          | grep -qx ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+  redisnode2:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_2
+    volumes:
+      - ./data_mnt_redis/data/node-2:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes'
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode2'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT_2}:6379'
+      - '${REDIS_PORT_2}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' \
+          | awk -F: '/^cluster_state:/{print $2}' \
+          | grep -qx ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+  redisnode3:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_3
+    volumes:
+      - ./data_mnt_redis/data/node-3:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes'
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode3'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT_3}:6379'
+      - '${REDIS_PORT_3}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' \
+          | awk -F: '/^cluster_state:/{print $2}' \
+          | grep -qx ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+  redisnode4:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_4
+    volumes:
+      - ./data_mnt_redis/data/node-4:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes'
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode4'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT_4}:6379'
+      - '${REDIS_PORT_4}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' \
+          | awk -F: '/^cluster_state:/{print $2}' \
+          | grep -qx ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+  redisnode5:
+    image: docker.io/bitnamilegacy/redis-cluster:7.4
+    container_name: drvalue_bmes_redis_node_5
+    depends_on:
+      - redisnode0
+      - redisnode1
+      - redisnode2
+      - redisnode3
+      - redisnode4
+    volumes:
+      - ./data_mnt_redis/data/node-5:/bitnami/redis/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_NODES: 'redisnode0 redisnode1 redisnode2 redisnode3 redisnode4 redisnode5'
+      REDIS_CLUSTER_DYNAMIC_IPS: 'yes'
+      REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE: 'hostname'
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: 'redisnode5'
+      REDIS_CLUSTER_ANNOUNCE_PORT: '6379'
+      REDIS_CLUSTER_ANNOUNCE_BUS_PORT: '16379'
+      REDISCLI_AUTH: ${REDIS_PASSWORD}
+      REDIS_CLUSTER_REPLICAS: '1'
+      REDIS_CLUSTER_CREATOR: 'yes'
+      REDIS_EXTRA_FLAGS: '--maxmemory ${REDIS_MAX_MEMORY} --maxmemory-policy volatile-ttl'
+    ports:
+      - '${REDIS_PORT_5}:6379'
+      - '${REDIS_PORT_5}1:16379'
+    healthcheck:
+      test: [
+          'CMD-SHELL',
+          "/opt/bitnami/redis/bin/redis-cli --no-auth-warning -h 127.0.0.1 -p 6379 -a \"$REDIS_PASSWORD\" cluster info \
+          | tr -d '\\r' | tee /tmp/ci && \
+          awk -F: '/^cluster_state:/{print $2}' /tmp/ci | grep -qx ok && \
+          awk -F: '/^cluster_known_nodes:/{print $2}' /tmp/ci | grep -qx 6 && \
+          awk -F: '/^cluster_slots_assigned:/{print $2}' /tmp/ci | grep -qx 16384",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+    networks: [drvalue_bmes_backend_net]
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

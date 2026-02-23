@@ -1,0 +1,9 @@
+{
+  "name": "glb-commons",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/glb-commons/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project glb-commons --web",
+  "targets": {}
+}

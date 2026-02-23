@@ -1,0 +1,96 @@
+version: '3.8'
+services:
+  rabbitmq1:
+    image: rabbitmq:3.12-management
+    container_name: drvalue_bmes_rabbitmq1
+    hostname: rabbitmq1
+    environment:
+      RABBITMQ_NODENAME: 'rabbit@rabbitmq1'
+      RABBITMQ_ERLANG_COOKIE: '${RABBITMQ_ERLANG_COOKIE}'
+      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
+      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
+    ports:
+      - '${RABBITMQ1_MANAGEMENT_PORT}:15672'
+      - '${RABBITMQ1_AMQP_PORT}:5672'
+    volumes:
+      - ./data_mnt_rabbitmq1/data/:/var/lib/rabbitmq/
+    healthcheck:
+      test: ['CMD-SHELL', 'rabbitmqctl node_health_check || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      - drvalue_bmes_backend_net
+
+  rabbitmq2:
+    image: rabbitmq:3.12-management
+    container_name: drvalue_bmes_rabbitmq2
+    hostname: rabbitmq2
+    environment:
+      RABBITMQ_NODENAME: 'rabbit@rabbitmq2'
+      RABBITMQ_ERLANG_COOKIE: '${RABBITMQ_ERLANG_COOKIE}'
+      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
+      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
+    depends_on:
+      - rabbitmq1
+    networks:
+      - drvalue_bmes_backend_net
+    command: >
+      sh -c "
+        rabbitmq-server -detached &&
+        sleep 3 &&
+        rabbitmqctl stop_app &&
+        rabbitmqctl join_cluster rabbit@rabbitmq1 &&
+        rabbitmqctl start_app &&
+        tail -f /dev/null
+      "
+    ports:
+      - '${RABBITMQ2_MANAGEMENT_PORT}:15672'
+      - '${RABBITMQ2_AMQP_PORT}:5672'
+    volumes:
+      - ./data_mnt_rabbitmq2/data/:/var/lib/rabbitmq/
+    healthcheck:
+      test: ['CMD-SHELL', 'rabbitmqctl node_health_check || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  rabbitmq3:
+    image: rabbitmq:3.12-management
+    container_name: drvalue_bmes_rabbitmq3
+    hostname: rabbitmq3
+    environment:
+      RABBITMQ_NODENAME: 'rabbit@rabbitmq3'
+      RABBITMQ_ERLANG_COOKIE: '${RABBITMQ_ERLANG_COOKIE}'
+      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
+      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
+    depends_on:
+      - rabbitmq1
+    networks:
+      - drvalue_bmes_backend_net
+    command: >
+      sh -c "
+        rabbitmq-server -detached &&
+        sleep 3 &&
+        rabbitmqctl stop_app &&
+        rabbitmqctl join_cluster rabbit@rabbitmq1 &&
+        rabbitmqctl start_app &&
+        tail -f /dev/null
+      "
+    ports:
+      - '${RABBITMQ3_MANAGEMENT_PORT}:15672'
+      - '${RABBITMQ3_AMQP_PORT}:5672'
+    volumes:
+      - ./data_mnt_rabbitmq3/data/:/var/lib/rabbitmq/
+    healthcheck:
+      test: ['CMD-SHELL', 'rabbitmqctl node_health_check || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

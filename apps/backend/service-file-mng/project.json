@@ -1,0 +1,37 @@
+{
+  "name": "service-file-mng",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/service-file-mng/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "webpack-cli build",
+        "args": ["node-env=production"]
+      },
+      "configurations": {
+        "development": {
+          "args": ["node-env=development"]
+        }
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+      },
+      "configurations": {
+        "development": {
+          "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+        },
+        "production": {
+          "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+        }
+      }
+    }
+  },
+  "tags": []
+}

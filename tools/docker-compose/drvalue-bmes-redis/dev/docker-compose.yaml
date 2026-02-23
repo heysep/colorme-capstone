@@ -1,0 +1,19 @@
+# docker-compose.drvalue-bmes-redis.yml
+version: '3.8'
+
+services:
+  redisnode:
+    image: bitnamilegacy/redis:7.4
+    container_name: drvalue_bmes_redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT_NUMBER=6379
+    ports:
+      - '6379:6379'
+      - '16379:16379'
+    networks:
+      - drvalue_bmes_backend_net
+
+networks:
+  drvalue_bmes_backend_net:
+    external: true

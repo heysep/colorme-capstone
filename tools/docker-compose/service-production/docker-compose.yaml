@@ -1,0 +1,27 @@
+# docker-compose.service-production.yml
+version: '3.8'
+services:
+  service-production:
+    build:
+      context: ${APP_ROOT_PATH}
+      dockerfile: tools/docker-compose/service.Dockerfile
+      args:
+        SERVICE_NAME: service-production
+    container_name: service-production
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${APP_ROOT_PATH}/apps:/app/apps
+      - ${APP_ROOT_PATH}/libs:/app/libs
+      - ${APP_ROOT_PATH}/resources:/app/resources
+    environment:
+      - DOPPLER_TOKEN=${DOPPLER_TOKEN_CUSTOM}
+      - DOPPLER_PROJECT=drvalue-bmes-backend
+      - DOPPLER_CONFIG=prd
+    ports:
+      - '3310:3310'
+    networks:
+      - drvalue_bmes_backend_net
+networks:
+  drvalue_bmes_backend_net:
+    external: true

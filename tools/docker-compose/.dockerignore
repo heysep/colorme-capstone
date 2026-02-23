@@ -1,0 +1,27 @@
+.git
+.dockerignore
+
+# WebAssembly 관련 파일들은 포함해야 함
+# wasm/
+# !wasm/spec-board-yield-calc/
+
+monitoring
+/monitoring/*
+
+mysql
+./mysql/*
+
+rabbitmq
+./rabbitmq/*
+
+redis
+./redis/*
+
+serv-auth
+./serv-auth/*
+
+serv-baseinfo
+./serv-baseinfo/*
+
+serv-gateway
+./serv-gateway/*
