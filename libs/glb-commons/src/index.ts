@@ -59,6 +59,10 @@ export * from './lib/core-typeorm/entity/default/rn-default-admin-user.mysql-ent
 export * from './lib/core-typeorm/entity/default/rn-default-bugfix-board-comment.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-bugfix-board.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-inci-ingredient.mysql-entity';
+export * from './lib/core-typeorm/entity/default/rn-default-pc-analysis.mysql-entity';
+export * from './lib/core-typeorm/entity/default/rn-default-pc-saved-look.mysql-entity';
+export * from './lib/core-typeorm/entity/default/rn-default-pc-user.mysql-entity';
+export * from './lib/core-typeorm/entity/default/rn-default-personal-color.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-service-access.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-tenant-config.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-tenant-region.mysql-entity';
