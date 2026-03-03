@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { MainTaskUtil } from '@drvalue-bmes-backend/glb-commons';
+import { MainTaskUtil } from '@capstone-project/glb-commons';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {

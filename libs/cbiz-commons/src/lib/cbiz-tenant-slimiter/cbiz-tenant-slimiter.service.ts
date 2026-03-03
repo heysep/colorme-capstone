@@ -1,7 +1,7 @@
 import {
   LogMxProvider,
   RnDefaultTenantRepository,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CbizTenantConfigKey } from '../cbiz-tenant-config/cbiz-tenant-config.utils';

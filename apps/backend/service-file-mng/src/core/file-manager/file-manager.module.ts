@@ -2,7 +2,7 @@ import {
   GlbLogMxModule,
   TYPE_ORM_FOR_FEATURE,
   TYPE_ORM_FOR_FEATURE_SUBMYSQL,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
 import { FileManagerDefaultController } from './controller/file-manager-default.controller';
 import { FileManagerDownloadOnlyController } from './controller/file-manager-download-only.controller';

@@ -5,7 +5,7 @@ import {
   RN_MAIN_DATABASE_CONNECTION_NAME,
   rnDayjs,
   RnDefaultUploadFileEntity,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';

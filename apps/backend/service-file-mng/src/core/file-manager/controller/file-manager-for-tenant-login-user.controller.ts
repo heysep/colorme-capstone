@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CbizTenantConfigKey } from '@drvalue-bmes-backend/cbiz-commons';
+import { CbizTenantConfigKey } from '@capstone-project/cbiz-commons';
 import {
   CommonError,
   CommonResponseUtil,
@@ -20,7 +20,7 @@ import {
   User,
   UserStatus,
   removeTenantCodeRRNumber,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import {
   Controller,
   Post,

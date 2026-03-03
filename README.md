@@ -1,4 +1,4 @@
-# DrValue BMES
+# Capstone Project
 
 AI를 활용한 퍼스널 컬러 진단 및 옷 가상 피팅 서비스
 
@@ -48,11 +48,22 @@ flowchart TB
 | `apps/frontend/web/` | Next.js 웹 앱                                                                   |
 | `libs/`              | 공통 모듈 (cbiz-commons, glb-commons)                                           |
 
+### 퍼스널 컬러 도메인 엔티티 (glb-commons)
+
+| 엔티티                         | 테이블명                    | 설명                                   |
+| ------------------------------ | --------------------------- | -------------------------------------- |
+| `RnDefaultPersonalColorEntity` | `rn_default_personal_color` | 퍼스널 컬러 톤 마스터 (Spring Warm 등) |
+| `RnDefaultPcUserEntity`        | `rn_default_pc_user`        | 퍼스널 컬러 앱 사용자                  |
+| `RnDefaultPcAnalysisEntity`    | `rn_default_pc_analysis`    | 퍼스널 컬러 진단 결과                  |
+| `RnDefaultPcSavedLookEntity`   | `rn_default_pc_saved_look`  | 가상 피팅 저장 결과                    |
+
 ## 사전 요구사항
 
 - Node.js 18+
 - pnpm
-- Python 3.x (선택) – UI/UX Pro Max 스킬용
+
+> Python은 별도 설치할 필요 없음. UI 작업 시 Cursor 채팅에서 자연어로 요청하면 AI가 디자인 스킬을 활용함.  
+> 스크립트로 디자인 시스템을 생성하려면 Python 3.x 선택 설치.
 
 ## 설치 및 실행
 
@@ -90,50 +101,14 @@ nx graph    # 의존성 시각화
 
 프로젝트에 설치된 AI 디자인 지원 스킬 (67 스타일, 96 컬러 팔레트, 57 폰트 조합, 99 UX 가이드라인).
 
-**사전 요구사항:** Python 3.x (`python3 --version`)
+### 채팅으로 바로 요청 (권장)
 
-### 1) 디자인 시스템 생성 (UI 작업 전 권장)
-
-```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "퍼스널 컬러 진단 패션" --design-system -p "DrValue BMES" -f markdown
-```
-
-### 2) 프로젝트에 디자인 시스템 저장 (세션 간 유지)
-
-```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "퍼스널 컬러 가상 피팅" --design-system --persist -p "DrValue BMES"
-```
-
-→ `design-system/MASTER.md` 생성. 페이지별 오버라이드는 `--page "대시보드"` 추가.
-
-### 3) 도메인별 검색 (추가 상세 정보)
-
-| 용도        | 도메인       | 예시                                     |
-| ----------- | ------------ | ---------------------------------------- |
-| 스타일 옵션 | `style`      | `--domain style "glassmorphism minimal"` |
-| 컬러 팔레트 | `color`      | `--domain color "beauty fashion"`        |
-| 폰트 조합   | `typography` | `--domain typography "elegant modern"`   |
-| UX 가이드   | `ux`         | `--domain ux "accessibility animation"`  |
-
-```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "beauty fashion" --domain color
-```
-
-### 4) 스택별 가이드 (Next.js + Tailwind)
-
-```bash
-python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "레이아웃 폼" --stack nextjs
-```
-
-### 5) 채팅에서 자연스럽게 요청
+Python 설치 없이 Cursor 채팅에서 자연어로 요청하면 됨. AI가 스킬을 자동 활용함.
 
 - "퍼스널 컬러 진단 대시보드 UI 만들어줘"
 - "가상 피팅 선택 화면 디자인해줘"
-
-Cursor가 UI/UX 요청을 인식하면 자동으로 스킬을 활용함.
 
 ## 참고
 
 - [Nx 문서](https://nx.dev)
 - [Nx 태스크 실행](https://nx.dev/features/run-tasks)
-# colorme-capstone

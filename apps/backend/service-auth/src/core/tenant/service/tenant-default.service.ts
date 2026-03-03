@@ -1,7 +1,7 @@
 import {
   IDefaultOutputDto,
   RnDefaultTenantRepository,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

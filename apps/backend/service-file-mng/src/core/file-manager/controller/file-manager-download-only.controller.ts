@@ -3,7 +3,7 @@ import {
   CommonError,
   LogMxProvider,
   ObjectStorageDownloadService,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Controller, Get, Param, Req, StreamableFile } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';

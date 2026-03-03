@@ -1,7 +1,7 @@
 import {
   GlbCoreAclModule,
   GlbLogMxModule,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
 import { AuthLoginDefaultController } from './controller/auth-login-default.controller';
 import { AuthMeDefaultController } from './controller/auth-me-default.controller';

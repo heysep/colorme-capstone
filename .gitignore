@@ -40,5 +40,19 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
+project-graph.json
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+# pnpm
+.pnpm-store
+
+# next.js
+.next/
+
+# local env files
+.env.local
+.env.*.local
+
+# build output
+build/

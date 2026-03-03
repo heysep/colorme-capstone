@@ -2,7 +2,7 @@ import {
   GlbCoreAclRootUserService,
   GlbCoreAclTenantEmployeeAccountService,
   ITenantTransactionContext,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
 import { IDefaultOutputDto } from 'libs/glb-commons/src/lib/utils-dto/default-output.dto';
 

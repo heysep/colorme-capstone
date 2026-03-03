@@ -1,4 +1,4 @@
-import { GlbLogMxModule } from '@drvalue-bmes-backend/glb-commons';
+import { GlbLogMxModule } from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
 import { TenantDefaultController } from './controller/tenant-default.controller';
 import { TenantDefaultService } from './service/tenant-default.service';

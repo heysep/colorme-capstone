@@ -1,4 +1,4 @@
-import { ICommonErrorCode } from '@drvalue-bmes-backend/glb-commons';
+import { ICommonErrorCode } from '@capstone-project/glb-commons';
 import { HttpStatus } from '@nestjs/common';
 
 export const CbizTenantSlimiterError = {

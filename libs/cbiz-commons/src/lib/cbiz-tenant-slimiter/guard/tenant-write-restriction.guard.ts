@@ -6,7 +6,7 @@ import {
   TENANT_CODE_HEADER,
   TENANT_CODE_ROOT,
   TENANT_CONNECTION_KEY,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { CbizTenantSlimiterService } from '../cbiz-tenant-slimiter.service';

@@ -1,4 +1,4 @@
-import { IsString } from '@drvalue-bmes-backend/glb-commons';
+import { IsString } from '@capstone-project/glb-commons';
 
 export class ControllerAuthLoginDefaultDto {
   @IsString({

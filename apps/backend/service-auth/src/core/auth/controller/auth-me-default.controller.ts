@@ -11,7 +11,7 @@ import {
   RnTenantCbizEmployeeMappingAccountEntity,
   TenantTransactionContext,
   User,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Controller, Get, HttpStatus, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthMeDefaultService } from '../service/auth-me-default.service';

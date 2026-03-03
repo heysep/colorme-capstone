@@ -6,7 +6,7 @@ import {
   UploaderType,
   UploadFileStatus,
   UploadFileStorageType,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 

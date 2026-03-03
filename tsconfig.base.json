@@ -14,8 +14,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@drvalue-bmes-backend/cbiz-commons": ["libs/cbiz-commons/src/index.ts"],
-      "@drvalue-bmes-backend/glb-commons": ["libs/glb-commons/src/index.ts"]
+      "@capstone-project/cbiz-commons": ["libs/cbiz-commons/src/index.ts"],
+      "@capstone-project/glb-commons": ["libs/glb-commons/src/index.ts"]
     }
   }
 }

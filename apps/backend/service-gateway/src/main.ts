@@ -83,7 +83,7 @@ async function bootstrap() {
   ); // 폰트 파일 경로
   const fontData = fs.readFileSync(fontFilePath, 'utf-8');
   figlet.parseFont('custom-font', fontData);
-  const figletText = await figlet.textSync('drvalue-bmes nx', {
+  const figletText = await figlet.textSync('capstone-project nx', {
     font: 'custom-font',
     width: 80,
     horizontalLayout: 'default',

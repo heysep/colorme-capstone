@@ -4,7 +4,7 @@ import {
   RnDefaultRootUserEntity,
   RnDefaultRootUserRepository,
   RnTenantCbizEmployeeMappingAccountEntity,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
 import { EmployeeMappingAccountDefaultRepository } from '../repository/employee-mapping-account-default.repository';
 

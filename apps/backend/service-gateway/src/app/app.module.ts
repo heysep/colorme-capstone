@@ -2,7 +2,7 @@ import {
   GlbCoreTypeOrmModule,
   GlbLogMxModule,
   GlbRedisCoreModule,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';

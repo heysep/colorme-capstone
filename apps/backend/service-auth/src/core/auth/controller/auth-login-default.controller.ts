@@ -5,7 +5,7 @@ import {
   ITenantTransactionContext,
   LogMxProvider,
   TenantTransactionContext,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ControllerAuthLoginDefaultDto } from '../dto/controller.auth-login-default.dto';

@@ -2,7 +2,7 @@ import {
   ITenantTransactionContext,
   RnBaseTenantRepository,
   RnTenantCbizEmployeeMappingAccountEntity,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 

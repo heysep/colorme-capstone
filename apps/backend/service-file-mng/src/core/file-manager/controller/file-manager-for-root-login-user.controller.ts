@@ -12,7 +12,7 @@ import {
   RnDefaultUploadFileEntity,
   User,
   UserStatus,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import {
   Controller,
   Post,

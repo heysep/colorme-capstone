@@ -1,7 +1,7 @@
 import {
   CbizTenantSlimiterModule,
   TenantWriteRestrictionGuard,
-} from '@drvalue-bmes-backend/cbiz-commons';
+} from '@capstone-project/cbiz-commons';
 import {
   GlbCommonResponseModule,
   GlbCoreAclModule,
@@ -13,7 +13,7 @@ import {
   ServiceAccessModule,
   TenantProviderForMiddlewareInjectOnly,
   UtilTypeOrmMiddleware,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';

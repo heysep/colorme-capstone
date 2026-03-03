@@ -1,4 +1,4 @@
-import { LogMxProvider } from '@drvalue-bmes-backend/glb-commons';
+import { LogMxProvider } from '@capstone-project/glb-commons';
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 

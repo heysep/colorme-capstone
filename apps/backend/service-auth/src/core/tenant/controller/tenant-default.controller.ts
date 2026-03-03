@@ -4,7 +4,7 @@ import {
   IJsxCrudGetOneDtoFactory,
   LogMxProvider,
   RnDefaultTenantEntity,
-} from '@drvalue-bmes-backend/glb-commons';
+} from '@capstone-project/glb-commons';
 import { Controller, Get, HttpStatus, Param, Req } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { TenantDefaultService } from '../service/tenant-default.service';
