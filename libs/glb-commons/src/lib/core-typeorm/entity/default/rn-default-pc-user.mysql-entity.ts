@@ -15,6 +15,11 @@ export enum UserGender {
   FEMALE = 'FEMALE',
 }
 
+export enum PcUserAuthType {
+  GUEST = 'GUEST',
+  REGISTERED = 'REGISTERED',
+}
+
 /**
  * 퍼스널 컬러 앱 사용자 엔티티
  *
@@ -37,47 +42,67 @@ export class RnDefaultPcUserEntity extends RnBaseBaseMysqlEntity {
     type: 'varchar',
     length: 20,
     comment: '로그인 ID',
-    nullable: false,
+    nullable: true,
     unique: true,
     example: 'user001',
   })
-  userId: string;
+  userId: string | null;
 
   @Column({
     type: 'varchar',
     length: 255,
     comment: '비밀번호 (해시 저장 권장)',
-    nullable: false,
+    nullable: true,
     example: 'password_hash',
   })
-  userPw: string;
+  userPw: string | null;
 
   @Column({
     type: 'varchar',
     length: 10,
     comment: '사용자 이름',
-    nullable: false,
+    nullable: true,
     example: '홍길동',
   })
-  userName: string;
+  userName: string | null;
 
   @Column({
     type: 'enum',
     enum: UserGender,
     comment: '성별',
-    nullable: false,
+    nullable: true,
     example: UserGender.FEMALE,
   })
-  userGender: UserGender;
+  userGender: UserGender | null;
 
   @Column({
     type: 'varchar',
     length: 5,
     comment: '나이',
-    nullable: false,
+    nullable: true,
     example: '25',
   })
-  userAge: string;
+  userAge: string | null;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '게스트 세션 토큰',
+    nullable: false,
+    unique: true,
+    example: 'pc_session_1234567890',
+  })
+  sessionToken: string;
+
+  @Column({
+    type: 'enum',
+    enum: PcUserAuthType,
+    comment: '사용자 인증 유형',
+    nullable: false,
+    default: PcUserAuthType.GUEST,
+    example: PcUserAuthType.GUEST,
+  })
+  authType: PcUserAuthType;
 
   @Column({
     type: 'varchar',
@@ -93,6 +118,7 @@ export class RnDefaultPcUserEntity extends RnBaseBaseMysqlEntity {
     onUpdate: 'SET NULL',
     description: '진단된 퍼스널 컬러',
     type: () => RnDefaultPersonalColorEntity,
+    nullable: true,
   })
   @JoinColumn({
     name: 'userPersonalColorId',

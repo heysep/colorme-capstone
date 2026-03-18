@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:backend": "nx run-many -t build -p service-auth,service-file-mng,service-gateway",
+    "build:backend": "nx run-many -t build -p service-auth,service-file-mng,service-gateway,service-personal-color",
     "build:frontend": "nx run web:build",
     "serve:web": "nx run web:dev",
     "serve:auth": "nx run service-auth:serve",
     "serve:gateway": "nx run service-gateway:serve",
-    "serve:file-mng": "nx run service-file-mng:serve"
+    "serve:file-mng": "nx run service-file-mng:serve",
+    "serve:personal-color": "nx run service-personal-color:serve"
   },
   "private": true,
   "dependencies": {

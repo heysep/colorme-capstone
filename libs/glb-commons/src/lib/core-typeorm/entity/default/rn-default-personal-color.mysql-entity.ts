@@ -34,10 +34,38 @@ export class RnDefaultPersonalColorEntity extends RnBaseBaseMysqlEntity {
   seasonName: string;
 
   @Column({
+    type: 'varchar',
+    length: 30,
+    comment: '시즌 코드',
+    nullable: false,
+    unique: true,
+    example: 'SPRING_WARM',
+  })
+  seasonCode: string;
+
+  @Column({
     type: 'text',
     comment: '톤 설명 설명',
     nullable: true,
     example: '봄 웜톤인 이유 설명',
   })
   description: string | null;
+
+  @Column({
+    type: 'json',
+    comment: '추천 컬러 팔레트',
+    nullable: true,
+    example: {
+      colors: [
+        { label: '살구', hex: '#F4B183' },
+        { label: '코랄', hex: '#FF7F50' },
+      ],
+    },
+  })
+  palette: {
+    colors: Array<{
+      label: string;
+      hex: string;
+    }>;
+  } | null;
 }

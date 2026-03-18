@@ -14,6 +14,7 @@ import { RnDefaultBugfixBoardEntity } from './entity/default/rn-default-bugfix-b
 import { RnDefaultInciIngredientHistoryEntity } from './entity/default/rn-default-inci-ingredient-history.mysql-entity';
 import { RnDefaultInciIngredientEntity } from './entity/default/rn-default-inci-ingredient.mysql-entity';
 import { RnDefaultPcAnalysisEntity } from './entity/default/rn-default-pc-analysis.mysql-entity';
+import { RnDefaultPcCatalogItemEntity } from './entity/default/rn-default-pc-catalog-item.mysql-entity';
 import { RnDefaultPcSavedLookEntity } from './entity/default/rn-default-pc-saved-look.mysql-entity';
 import { RnDefaultPcUserEntity } from './entity/default/rn-default-pc-user.mysql-entity';
 import { RnDefaultPersonalColorEntity } from './entity/default/rn-default-personal-color.mysql-entity';
@@ -64,6 +65,7 @@ export const TYPE_ORM_FOR_FEATURE = TypeOrmModule.forFeature([
   RnDefaultPcUserEntity,
   RnDefaultPcAnalysisEntity,
   RnDefaultPcSavedLookEntity,
+  RnDefaultPcCatalogItemEntity,
 ]);
 
 export const TYPE_ORM_FOR_FEATURE_SUBMYSQL = TypeOrmModule.forFeature(

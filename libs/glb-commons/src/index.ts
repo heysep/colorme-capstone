@@ -60,6 +60,7 @@ export * from './lib/core-typeorm/entity/default/rn-default-bugfix-board-comment
 export * from './lib/core-typeorm/entity/default/rn-default-bugfix-board.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-inci-ingredient.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-pc-analysis.mysql-entity';
+export * from './lib/core-typeorm/entity/default/rn-default-pc-catalog-item.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-pc-saved-look.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-pc-user.mysql-entity';
 export * from './lib/core-typeorm/entity/default/rn-default-personal-color.mysql-entity';

@@ -8,6 +8,13 @@ import { RnBaseBaseMysqlEntity } from '../base/rn-base.base-mysql-entity';
 import { RnDefaultPcAnalysisEntity } from './rn-default-pc-analysis.mysql-entity';
 import { RnDefaultPcUserEntity } from './rn-default-pc-user.mysql-entity';
 
+export enum PcSavedLookStatus {
+  TRYON_PENDING = 'TRYON_PENDING',
+  TRYON_PROCESSING = 'TRYON_PROCESSING',
+  TRYON_COMPLETED = 'TRYON_COMPLETED',
+  FAILED = 'FAILED',
+}
+
 /**
  * 가상 피팅 저장 결과 엔티티
  *
@@ -58,6 +65,77 @@ export class RnDefaultPcSavedLookEntity extends RnBaseBaseMysqlEntity {
     example: 'https://storage.example.com/tryon/result.jpg',
   })
   tryOnImageUrl: string | null;
+
+  @Column({
+    type: 'enum',
+    enum: PcSavedLookStatus,
+    comment: '가상 피팅 상태',
+    nullable: false,
+    default: PcSavedLookStatus.TRYON_PENDING,
+    example: PcSavedLookStatus.TRYON_PROCESSING,
+  })
+  status: PcSavedLookStatus;
+
+  @Column({
+    type: 'json',
+    comment: '선택된 카탈로그 아이템 ID 목록',
+    nullable: true,
+    example: {
+      topItemId: 1,
+      bottomItemId: 2,
+      accessoryItemId: 3,
+    },
+  })
+  selectedItemIds: Record<string, number | null> | null;
+
+  @Column({
+    type: 'json',
+    comment: '추천 스냅샷',
+    nullable: true,
+    example: {
+      tops: [],
+      bottoms: [],
+      accessories: [],
+    },
+  })
+  recommendationSnapshot: Record<string, unknown> | null;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '제공자 작업 ID',
+    nullable: true,
+    example: 'gemini-look-123',
+  })
+  providerJobId: string | null;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: '제공자 이름',
+    nullable: true,
+    example: 'GEMINI',
+  })
+  providerName: string | null;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '공유 토큰',
+    nullable: true,
+    unique: true,
+    example: 'share-token-123',
+  })
+  shareToken: string | null;
+
+  @Column({
+    type: 'boolean',
+    comment: '저장 여부',
+    nullable: false,
+    default: false,
+    example: false,
+  })
+  savedYn: boolean;
 
   @Column({
     type: 'text',
