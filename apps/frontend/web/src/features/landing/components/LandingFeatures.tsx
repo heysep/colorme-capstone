@@ -1,8 +1,8 @@
-import { Palette, Shirt, Sparkles } from 'lucide-react';
-import { Card } from '@/components/ui/Card';
+import { Palette, Shirt, Sparkles, type LucideIcon } from 'lucide-react';
 import { siteConfig } from '@/lib/constants/site-config';
 
-const featureIcons = [Palette, Shirt, Sparkles] as const;
+const featureIcons: LucideIcon[] = [Palette, Shirt, Sparkles];
+const fallbackIcon: LucideIcon = Sparkles;
 
 export function LandingFeatures() {
   return (
@@ -26,7 +26,7 @@ export function LandingFeatures() {
         </div>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {siteConfig.features.map((feature, index) => {
-            const Icon = featureIcons[index];
+            const Icon = featureIcons[index] ?? fallbackIcon;
             return (
               <div
                 key={feature.title}

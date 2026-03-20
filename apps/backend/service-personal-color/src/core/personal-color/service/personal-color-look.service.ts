@@ -115,13 +115,14 @@ export class PersonalColorLookService {
       description: null,
     });
 
-    void this.processLookInBackground(look.id).catch(async () => {
+    void this.processLookInBackground(look.id).catch(async (error) => {
       await this.savedLookRepository.update(
         {
           id: look.id,
         },
         {
           status: PcSavedLookStatus.FAILED,
+          providerName: error instanceof Error ? error.message.substring(0, 255) : '가상 피팅 처리 중 알 수 없는 오류',
         },
       );
     });
@@ -417,10 +418,12 @@ export class PersonalColorLookService {
       return analysis.personalColor.seasonCode as PcSeasonCode;
     }
 
-    const sorted = Object.entries(
-      (analysis.seasonScores ?? {}) as Record<string, number>,
-    ).sort((a, b) => b[1] - a[1]);
+    const seasonScores = analysis.seasonScores as Record<string, number> | null;
+    if (!seasonScores || Object.keys(seasonScores).length === 0) {
+      return PcSeasonCode.SPRING_WARM;
+    }
 
+    const sorted = Object.entries(seasonScores).sort((a, b) => b[1] - a[1]);
     return (sorted[0]?.[0] as PcSeasonCode | undefined) ?? PcSeasonCode.SPRING_WARM;
   }
 

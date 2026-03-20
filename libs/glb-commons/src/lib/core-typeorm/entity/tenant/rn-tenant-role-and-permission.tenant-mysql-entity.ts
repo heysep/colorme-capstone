@@ -38,8 +38,8 @@ export class RnTenantRoleAndPermissionEntity extends RnBaseBaseMysqlEntity {
     (role) => role.id,
     {
       eager: true,
-      onDelete: 'SET NULL',
-      onUpdate: 'SET NULL',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
       description: '역할',
       type: () => RnTenantRoleEntity,
     }
@@ -58,8 +58,8 @@ export class RnTenantRoleAndPermissionEntity extends RnBaseBaseMysqlEntity {
     (permission) => permission.id,
     {
       eager: true,
-      onDelete: 'SET NULL',
-      onUpdate: 'SET NULL',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
       description: '권한',
       type: () => RnTenantPermissionEntity,
     }

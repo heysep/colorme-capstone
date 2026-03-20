@@ -27,7 +27,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     nullable: false,
     example: '테넌트 고유 아이디',
   })
-  id?: string;
+  id: string;
 
   @Column({
     type: 'varchar',
@@ -36,7 +36,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     nullable: false,
     example: '리전 설정 값',
   })
-  regionConfig?: string;
+  regionConfig: string;
 
   @Column({
     type: 'varchar',
@@ -45,7 +45,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     nullable: false,
     example: '테넌트 이름',
   })
-  name?: string;
+  name: string;
 
   @Column({
     type: 'varchar',
@@ -55,7 +55,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     index: true,
     example: '테넌트 코드',
   })
-  code?: string;
+  code: string;
 
   @Column({
     type: 'varchar',
@@ -65,7 +65,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     index: true,
     example: '데이터베이스 이름',
   })
-  dbName?: string;
+  dbName: string;
 
   @Column({
     type: 'varchar',
@@ -76,7 +76,7 @@ export class RnDefaultTenantEntity extends RnBaseBaseMysqlEntity {
     index: true,
     example: '테넌트별 도메인 이름',
   })
-  domainName?: string;
+  domainName: string;
 
   @OneToMany(() => RnDefaultTenantConfigEntity, (config) => config.tenant, {
     description: '테넌트 설정 목록',

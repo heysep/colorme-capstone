@@ -28,6 +28,13 @@ export class PersonalColorToneScoringService {
     this.applyContrastWeight(baseScores, analysis.contrast);
 
     const total = Object.values(baseScores).reduce((sum, value) => sum + value, 0);
+    if (total === 0) {
+      return {
+        seasonCode: PcSeasonCode.SPRING_WARM,
+        seasonScores: baseScores,
+        primaryConfidence: 0,
+      };
+    }
     const normalizedScores = Object.fromEntries(
       Object.entries(baseScores).map(([key, value]) => [
         key,

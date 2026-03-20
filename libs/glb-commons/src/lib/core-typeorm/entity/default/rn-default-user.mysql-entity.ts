@@ -58,6 +58,7 @@ export class RnDefaultRootUserEntity extends RnBaseBaseMysqlEntity {
     length: 100,
     comment: '사용자 아이디',
     nullable: false,
+    unique: true,
     example: '사용자 아이디',
   })
   userId: string;

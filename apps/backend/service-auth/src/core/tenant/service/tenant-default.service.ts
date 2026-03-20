@@ -13,9 +13,7 @@ export class TenantDefaultService {
     const tenant = await this.tenantRepository.repository.findOne({
       where: { code },
     });
-    return IDefaultOutputDto.success({
-      data: tenant,
-    });
+    return IDefaultOutputDto.success(tenant);
   }
 
   async findTenantByDomain(data: { domain: string }) {
@@ -23,8 +21,6 @@ export class TenantDefaultService {
     const tenant = await this.tenantRepository.repository.findOne({
       where: { domainName: domain },
     });
-    return IDefaultOutputDto.success({
-      data: tenant,
-    });
+    return IDefaultOutputDto.success(tenant);
   }
 }

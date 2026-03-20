@@ -33,8 +33,9 @@ export class GeminiApiClientService {
 
     if (!response.ok) {
       const text = await response.text();
+      const sanitizedText = text.length > 500 ? text.substring(0, 500) + '...' : text;
       this.logMxProvider.errorNoMetadata(
-        `Gemini API error [${response.status}]: ${text}`,
+        `Gemini API error [${response.status}]: ${sanitizedText}`,
       );
       throw CommonError.createByErrorCode(
         PersonalColorError.GEMINI_ANALYSIS_ERROR,

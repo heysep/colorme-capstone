@@ -12,7 +12,6 @@ export class PermissionGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
 
-    return true;
     const requirePermission = this.reflector.getAllAndOverride(
       'requirePermission',
       [context.getHandler(), context.getClass()]

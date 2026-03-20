@@ -145,7 +145,7 @@ export class CommonExceptionFilter implements ExceptionFilter {
       apiResponse.resultCode,
     );
 
-    response.status(HttpStatus.OK).json(apiResponse);
+    response.status(status).json(apiResponse);
   }
 
   private handleStandardException(
@@ -170,7 +170,7 @@ export class CommonExceptionFilter implements ExceptionFilter {
       exception,
     );
 
-    response.status(HttpStatus.OK).json(apiResponse);
+    response.status(status).json(apiResponse);
   }
 
   private handleFallbackError(
@@ -196,7 +196,7 @@ export class CommonExceptionFilter implements ExceptionFilter {
       { originalException, handlingError: error },
     );
 
-    response.status(HttpStatus.OK).json(apiResponse);
+    response.status(status).json(apiResponse);
   }
 }
 
@@ -231,7 +231,7 @@ export class CommonHttpExceptionFilter implements ExceptionFilter {
       exception,
     );
 
-    response.status(HttpStatus.OK).json(apiResponse);
+    response.status(status).json(apiResponse);
   }
 
   private extractErrorInfo(exception: HttpException): {

@@ -25,15 +25,12 @@ export class GatewayLogEventListener {
 
     try {
       if (this.logMxProvider) {
-        // this.logger.debug('LogMxProvider is available, attempting to log');
-        // this.logMxProvider.logNoMetadata(event.message);
-        // this.logger.debug('Log successfully written');
+        this.logMxProvider.logNoMetadata(event.message);
       } else {
         this.logger.error('LogMxProvider is not available');
       }
     } catch (error) {
       this.logger.error('Error in gateway log event handler:', error);
-      console.error('Gateway log 저장 중 오류 발생:', error);
     }
   }
 }

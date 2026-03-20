@@ -57,7 +57,7 @@ export class PersonalColorDefaultController {
   ) {}
 
   @Post('analyze/upload')
-  @UseInterceptors(FileInterceptor('photo'))
+  @UseInterceptors(FileInterceptor('photo', { limits: { fileSize: 10 * 1024 * 1024 } }))
   @ApiOperation({
     summary: '얼굴 사진 업로드 후 퍼스널 컬러 분석 시작',
   })

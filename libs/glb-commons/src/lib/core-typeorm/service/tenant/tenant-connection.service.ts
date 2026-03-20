@@ -106,9 +106,13 @@ export class TenantConnectionService implements OnModuleDestroy, OnModuleInit {
    */
   async onModuleInit() {
     // 최대 커넥션 설정
-    await this.dataSource.query(
-      `SET GLOBAL max_connections = ${process.env?.['GLB_CORE_TYPEORM_MAX_CONNECTIONS']};`,
-    );
+    const maxConnections = parseInt(process.env?.['GLB_CORE_TYPEORM_MAX_CONNECTIONS'] ?? '151', 10);
+    if (isNaN(maxConnections) || maxConnections < 1 || maxConnections > 100000) {
+      this.logger.warn(`잘못된 GLB_CORE_TYPEORM_MAX_CONNECTIONS 값, 기본값 151 사용`);
+      await this.dataSource.query(`SET GLOBAL max_connections = 151;`);
+    } else {
+      await this.dataSource.query(`SET GLOBAL max_connections = ?;`, [maxConnections]);
+    }
 
     /**
      * [2025-09-30] 테넌트 연결 상태 확인 전용 테넌트 생성

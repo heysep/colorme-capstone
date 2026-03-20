@@ -46,8 +46,11 @@ export class RedisCacheInterceptor implements NestInterceptor {
     );
 
     const request = context.switchToHttp().getRequest();
-    const tenantCode = request.headers['x-tenant-code'] || 'root';
-    const cacheKey = `cache:${tenantCode}:${request.url}`;
+    const rawTenantCode = request.headers['x-tenant-code'] || 'root';
+    const tenantCode = String(rawTenantCode).replace(/[^a-zA-Z0-9_-]/g, '');
+    const url = new URL(request.url, 'http://localhost');
+    url.searchParams.sort();
+    const cacheKey = `cache:${tenantCode}:${url.pathname}?${url.searchParams.toString()}`;
     const cachedData = await this.redisService.getRedis().get(cacheKey);
 
     if (cachedData) {

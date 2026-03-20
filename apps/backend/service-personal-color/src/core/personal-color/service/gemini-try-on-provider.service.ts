@@ -39,6 +39,32 @@ export class GeminiTryOnProviderService {
     const model =
       process.env.GEMINI_IMAGE_MODEL ?? 'gemini-3.1-flash-image-preview';
 
+    let lastError: unknown;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        return await this.attemptGenerateTryOn(model, options);
+      } catch (e) {
+        lastError = e;
+        this.logMxProvider.errorNoMetadata(
+          `Gemini try-on attempt ${attempt + 1} failed: ${e instanceof Error ? e.message : String(e)}`,
+        );
+      }
+    }
+    throw lastError;
+  }
+
+  private async attemptGenerateTryOn(
+    model: string,
+    options: {
+      personImage: { buffer: Buffer; mimeType: string };
+      topImage: { buffer: Buffer; mimeType: string; name: string };
+      bottomImage: { buffer: Buffer; mimeType: string; name: string };
+      accessoryImage?: { buffer: Buffer; mimeType: string; name: string } | null;
+      seasonName: string;
+      analysisReason: string | null;
+      palette: PcPalette | null;
+    },
+  ): Promise<GeminiGeneratedImageResult> {
     const promptParts = [
       'The first image is the person to preserve.',
       `Use the second image as the reference top garment: ${options.topImage.name}.`,
@@ -122,12 +148,14 @@ export class GeminiTryOnProviderService {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private extractImagePart(response: any):
     | {
         mimeType: string;
         data: string;
       }
     | null {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parts: any[] = response?.candidates?.[0]?.content?.parts ?? [];
     for (const part of parts) {
       const inlineData = part?.inlineData ?? part?.inline_data;

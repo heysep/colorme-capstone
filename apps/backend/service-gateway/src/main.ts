@@ -83,7 +83,7 @@ async function bootstrap() {
   ); // 폰트 파일 경로
   const fontData = fs.readFileSync(fontFilePath, 'utf-8');
   figlet.parseFont('custom-font', fontData);
-  const figletText = await figlet.textSync('capstone-project nx', {
+  const figletText = figlet.textSync('capstone-project nx', {
     font: 'custom-font',
     width: 80,
     horizontalLayout: 'default',
@@ -96,7 +96,7 @@ async function bootstrap() {
   // ===========================<<< 리버스 프록시 설정 >>>=========================================
   const onProxyReq = (proxyReq, req, res) => {
     // 클라이언트의 IP 주소를 서버에 전달한다.
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const clientIp = req.socket.remoteAddress ?? 'unknown';
 
     proxyReq.setHeader('X-Real-IP', clientIp);
     proxyReq.setHeader('X-Forwarded-For', clientIp);
@@ -118,8 +118,11 @@ async function bootstrap() {
   };
 
   // CORS 설정
+  const allowedOrigins = (configService.get<string>('CORS_ALLOWED_ORIGINS') ?? 'http://localhost:3000')
+    .split(',')
+    .map((o) => o.trim());
   app.enableCors({
-    origin: true,
+    origin: allowedOrigins,
     credentials: true,
   });
 
@@ -211,7 +214,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: authProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -229,7 +232,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: baseinfoProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -247,7 +250,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: salesProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -265,7 +268,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: researchProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -283,7 +286,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: productionProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -301,7 +304,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: fileManagerProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -319,7 +322,7 @@ async function bootstrap() {
     createProxyMiddleware<Request, Response>({
       target: stockProxyValue.target,
       changeOrigin: true,
-      secure: false,
+      secure: dopplerConfig === 'prd',
       proxyTimeout: MAX_PROXY_TIMEOUT,
       on: {
         proxyReq: onProxyReq,
@@ -331,7 +334,7 @@ async function bootstrap() {
   // 쿠키 파서 미들웨어 설정
   // app.use(cookieParser(process.env.COOKIE_SECRET));
   // Rest 기본 설정
-  app?.use(json({ limit: '100mb' }));
+  app?.use(json({ limit: '10mb' }));
   app?.set('trust proxy', 1);
   app?.setGlobalPrefix(gatewayPrefix);
   app?.enableShutdownHooks();
@@ -372,12 +375,26 @@ async function run(): Promise<void> {
       cluster.default.fork();
     }
 
-    // 워커가 종료되면 새로운 워커를 생성
+    // 워커가 종료되면 새로운 워커를 생성 (빠른 연속 크래시 방지)
+    const workerRestartTimes: number[] = [];
     cluster.default.on('exit', (worker, code, signal) => {
       logger.error(
-        `워커 프로세스(${worker.process.pid})가 종료되었습니다. 새 워커를 생성합니다.`,
+        `워커 프로세스(${worker.process.pid})가 종료되었습니다. code=${code}, signal=${signal}`,
       );
-      cluster.default.fork();
+
+      const now = Date.now();
+      workerRestartTimes.push(now);
+      // 최근 60초 내 5회 이상 재시작 시 중단
+      const recentRestarts = workerRestartTimes.filter((t) => now - t < 60000);
+      if (recentRestarts.length >= 5) {
+        logger.error('워커가 60초 내 5회 이상 재시작됨. 새 워커 생성을 중단합니다.');
+        return;
+      }
+
+      setTimeout(() => {
+        logger.log('새 워커를 생성합니다.');
+        cluster.default.fork();
+      }, 1000);
     });
 
     return;

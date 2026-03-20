@@ -4,7 +4,7 @@ import {
   ITenantTransactionContext,
 } from '@capstone-project/glb-commons';
 import { Injectable } from '@nestjs/common';
-import { IDefaultOutputDto } from 'libs/glb-commons/src/lib/utils-dto/default-output.dto';
+import { IDefaultOutputDto } from '@capstone-project/glb-commons';
 
 @Injectable()
 export class AuthLoginDefaultService {

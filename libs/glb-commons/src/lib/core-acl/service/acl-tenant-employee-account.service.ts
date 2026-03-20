@@ -44,11 +44,14 @@ export class GlbCoreAclTenantEmployeeAccountService {
    * @param options 토큰 생성 인자
    * @returns 생성된 JWT 토큰
    */
-  public async createJwtToken<T>(options: { payload: T }): Promise<string> {
-    return await this.jwtService.signAsync({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ...(options?.payload as any),
-    });
+  private async createJwtToken<T>(options: { payload: T }): Promise<string> {
+    return await this.jwtService.signAsync(
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(options?.payload as any),
+      },
+      { expiresIn: '24h' },
+    );
   }
 
   /**

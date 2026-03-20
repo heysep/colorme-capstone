@@ -206,11 +206,11 @@ export class JwtGuard extends AuthGuard('jwt') {
 
       // 사용자 상태 확인 [SUSPENDED] - UserStatus.SUSPENDED 가 없으면 확인하지 않는다.
       if (
-        (userStatusMustNot &&
-          userStatusMustNot.includes(UserStatus.SUSPENDED) &&
-          userEntity.data.entity.status ===
-            RnTenantEmployeeAccountStatus.SUSPENDED) ||
-        userEntity.data.entity.status === RnDefaultUserStatus.SUSPENDED
+        userStatusMustNot &&
+        userStatusMustNot.includes(UserStatus.SUSPENDED) &&
+        (userEntity.data.entity.status ===
+          RnTenantEmployeeAccountStatus.SUSPENDED ||
+          userEntity.data.entity.status === RnDefaultUserStatus.SUSPENDED)
       ) {
         throw CommonError.createByErrorCode(GlbCoreAclError.USER_SUSPENDED);
       }
