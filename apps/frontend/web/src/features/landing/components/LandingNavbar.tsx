@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { siteConfig } from '@/lib/constants/site-config';
+import Link from 'next/link';
 
 const navLinks = [
   { id: 'features', label: '기능' },
@@ -34,18 +35,27 @@ export function LandingNavbar() {
       </a>
 
       {/* 데스크톱 네비게이션 */}
-      <div className="hidden items-center gap-10 md:flex">
+      <div className="hidden items-center gap-6 md:flex">
         {navLinks.map((link) => (
           <button
             key={link.id}
             type="button"
             onClick={() => handleNavClick(link.id)}
-            className="group relative cursor-pointer text-sm font-bold tracking-tight text-muted transition-colors duration-200 hover:text-primary"
+            className="group relative mr-4 cursor-pointer text-sm font-bold tracking-tight text-muted transition-colors duration-200 hover:text-primary"
           >
             {link.label}
             <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-300 group-hover:w-full" />
           </button>
         ))}
+        <Link href="/login">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full px-6 font-bold text-primary transition-all hover:bg-primary/5 active:scale-95"
+          >
+            로그인
+          </Button>
+        </Link>
         <Button
           variant="primary"
           size="sm"
@@ -87,6 +97,15 @@ export function LandingNavbar() {
               {link.label}
             </button>
           ))}
+          <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full rounded-2xl py-6 font-bold text-primary transition-all hover:bg-primary/5"
+            >
+              로그인
+            </Button>
+          </Link>
           <Button
             variant="primary"
             size="sm"

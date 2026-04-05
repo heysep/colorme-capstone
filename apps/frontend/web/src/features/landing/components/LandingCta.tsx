@@ -1,7 +1,6 @@
-'use client';
-
 import { Button } from '@/components/ui/Button';
 import { siteConfig } from '@/lib/constants/site-config';
+import Link from 'next/link';
 
 export function LandingCta() {
   return (
@@ -31,13 +30,15 @@ export function LandingCta() {
             AI가 분석해 드리는 나만의 퍼스널 컬러와 가상 피팅을 무료로 체험해보세요.
           </p>
           <div className="mt-20 flex flex-col items-center justify-center gap-6 sm:flex-row">
-            <Button
-              variant="white"
-              size="lg"
-              className="h-20 w-full rounded-[2rem] px-14 text-xl font-black text-primary transition-all hover:scale-105 active:scale-95 sm:w-auto"
-            >
-              {siteConfig.ctaLabel}
-            </Button>
+            <Link href="/login" className="w-full sm:w-auto">
+              <Button
+                variant="white"
+                size="lg"
+                className="h-20 w-full rounded-[2rem] px-14 text-xl font-black text-primary transition-all hover:scale-105 active:scale-95"
+              >
+                {siteConfig.ctaLabel}
+              </Button>
+            </Link>
             <button
               type="button"
               className="h-20 w-full rounded-[2rem] border-2 border-white/10 bg-white/5 px-14 text-xl font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/20 active:scale-95 sm:w-auto"
