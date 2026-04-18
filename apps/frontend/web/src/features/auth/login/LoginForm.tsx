@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { authStorage } from '../lib/auth-storage';
+import { analysisStorage } from '@/features/analysis/lib/analysis-storage';
 // @TODO: API (2026/04/18) — 실제 백엔드 로그인 연동 시 아래 import 및 관련 로직 복구
 // import { loginApi, tenantApi } from '../api/auth-api';
 import Image from 'next/image';
@@ -77,7 +78,8 @@ export function LoginForm() {
       }
 
       authStorage.setSession(user.email);
-      router.push('/');
+      analysisStorage.reset();
+      router.push('/analysis/style');
     } catch (error: any) {
       openInfoModal('로그인 실패', error?.message ?? '알 수 없는 오류가 발생했습니다.');
     } finally {

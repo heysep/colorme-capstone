@@ -155,6 +155,93 @@
   .auth-select[data-placeholder="true"] {
     color: var(--color-auth-placeholder);
   }
+
+  /* 온보딩/결과 페이지 공통 섹션 셸 — 자식 margin-block:auto 로 세로 중앙 정렬
+     (justify-content:center 를 쓰면 콘텐츠가 뷰포트보다 커질 때 상단이 잘려 스크롤이 막힘) */
+  .section-shell {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.5rem;
+    background-color: var(--color-auth-page-bg);
+    position: relative;
+  }
+  .section-shell > * {
+    margin-block: auto;
+  }
+  .section-shell::before,
+  .section-shell::after {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+    z-index: -10;
+    width: 40%;
+    height: 40%;
+    border-radius: 9999px;
+    filter: blur(120px);
+  }
+  .section-shell::before {
+    top: -10%;
+    left: -10%;
+    background-color: rgba(99, 102, 241, 0.04);
+  }
+  .section-shell::after {
+    bottom: -10%;
+    right: -10%;
+    background-color: rgba(236, 72, 153, 0.04);
+  }
+
+  /* 라지 패널(여러 카드 그리드 담는 흰 박스) */
+  .panel-card {
+    width: 100%;
+    border-radius: 2.5rem;
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border: 1px solid rgba(99, 102, 241, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.1);
+  }
+
+  /* 선택 가능한 옵션 카드 (라이트 톤) */
+  .option-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem 1.25rem;
+    border-radius: 1.5rem;
+    border: 2px solid rgba(15, 23, 42, 0.06);
+    background-color: #fdfcfd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+  .option-card:hover {
+    border-color: rgba(99, 102, 241, 0.25);
+    background-color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .option-card[data-selected="true"] {
+    border-color: var(--color-primary);
+    background-color: rgba(99, 102, 241, 0.04);
+    box-shadow: 0 10px 25px -10px rgba(99, 102, 241, 0.3);
+  }
+
+  /* 선택 체크 배지 */
+  .option-check {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
