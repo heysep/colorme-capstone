@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { analysisStorage } from '../lib/analysis-storage';
 import { CameraCaptureModal } from './CameraCaptureModal';
+import { analyzeImage, type QualityReport } from './image-quality';
 
 const NOTICE_ITEMS = [
   '본 서비스의 퍼스널 컬러 진단 및 의상 추천은 AI 분석 결과로, 의학적·전문가 진단이 아닙니다.',
@@ -21,14 +22,47 @@ export function UploadView() {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorContent, setErrorContent] = useState({ title: '', description: '' });
+  const [quality, setQuality] = useState<QualityReport | null>(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    setPreview(analysisStorage.getState().photoDataUrl);
+    const saved = analysisStorage.getState().photoDataUrl;
+    if (saved) {
+      setPreview(saved);
+      runQualityCheck(saved);
+    }
+    // 최초 1회
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openError = (title: string, description: string) => {
     setErrorContent({ title, description });
     setErrorOpen(true);
+  };
+
+  const runQualityCheck = async (dataUrl: string) => {
+    setChecking(true);
+    setQuality(null);
+    try {
+      const report = await analyzeImage(dataUrl);
+      setQuality(report);
+    } catch {
+      setQuality(null);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const acceptImage = async (dataUrl: string) => {
+    setPreview(dataUrl);
+    analysisStorage.setPhoto(dataUrl);
+    await runQualityCheck(dataUrl);
+  };
+
+  const resetImage = () => {
+    setPreview(null);
+    setQuality(null);
+    analysisStorage.setPhoto(null);
   };
 
   const handleFile = (file: File) => {
@@ -39,18 +73,14 @@ export function UploadView() {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result;
-      if (typeof result === 'string') {
-        setPreview(result);
-        analysisStorage.setPhoto(result);
-      }
+      if (typeof result === 'string') acceptImage(result);
     };
     reader.onerror = () => openError('업로드 실패', '파일을 읽을 수 없습니다.');
     reader.readAsDataURL(file);
   };
 
   const handleCapture = (dataUrl: string) => {
-    setPreview(dataUrl);
-    analysisStorage.setPhoto(dataUrl);
+    acceptImage(dataUrl);
     setCameraOpen(false);
   };
 
@@ -59,8 +89,17 @@ export function UploadView() {
       openError('사진이 필요합니다', '사진을 업로드하거나 촬영한 뒤 진행해주세요.');
       return;
     }
+    if (quality?.hasError) {
+      openError(
+        '사진을 다시 선택해 주세요',
+        '분석에 적합하지 않은 사진입니다. 아래 안내를 참고하여 새 사진으로 교체해 주세요.'
+      );
+      return;
+    }
     router.push('/analysis/preference');
   };
+
+  const nextDisabled = !preview || checking || !!quality?.hasError;
 
   return (
     <div className="section-shell">
@@ -89,14 +128,88 @@ export function UploadView() {
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  setPreview(null);
-                  analysisStorage.setPhoto(null);
-                }}
+                onClick={resetImage}
                 className="cursor-pointer text-xs font-bold text-gray-500 underline underline-offset-4 hover:text-gray-700"
               >
                 다시 선택하기
               </button>
+            </div>
+          )}
+
+          {/* 품질 체크 결과 */}
+          {preview && (
+            <div>
+              {checking && (
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 text-sm font-bold text-indigo-700">
+                  <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-indigo-500" />
+                  사진 품질을 확인하는 중입니다...
+                </div>
+              )}
+              {!checking && quality && quality.issues.length === 0 && (
+                <div className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 text-sm font-bold text-emerald-700">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    className="h-5 w-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                  분석에 적합한 사진입니다. 다음 단계로 진행해 주세요.
+                </div>
+              )}
+              {!checking && quality && quality.issues.length > 0 && (
+                <ul className="space-y-2">
+                  {quality.issues.map((issue) => {
+                    const isError = issue.severity === 'error';
+                    return (
+                      <li
+                        key={issue.code}
+                        className={`flex gap-3 rounded-2xl border p-4 ${
+                          isError
+                            ? 'border-red-100 bg-red-50/70'
+                            : 'border-amber-100 bg-amber-50/60'
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          className={`mt-0.5 h-5 w-5 shrink-0 ${
+                            isError ? 'text-red-500' : 'text-amber-600'
+                          }`}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 9v3.75m0 3.75h.008M3.75 19.5h16.5L12 4.5 3.75 19.5Z"
+                          />
+                        </svg>
+                        <div className="space-y-1">
+                          <p
+                            className={`text-sm font-black ${
+                              isError ? 'text-red-700' : 'text-amber-800'
+                            }`}
+                          >
+                            {issue.title}
+                          </p>
+                          <p className="text-xs font-medium leading-relaxed text-gray-600">
+                            {issue.description}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           )}
 
@@ -202,10 +315,10 @@ export function UploadView() {
             variant="primary"
             size="lg"
             onClick={handleNext}
-            disabled={!preview}
+            disabled={nextDisabled}
             className="h-14 min-w-40 rounded-2xl text-base font-bold"
           >
-            다음 단계로
+            {checking ? '확인 중...' : '다음 단계로'}
           </Button>
         </footer>
       </div>
