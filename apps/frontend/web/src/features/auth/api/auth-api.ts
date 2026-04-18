@@ -12,9 +12,26 @@ const authApi = axios.create({
 });
 
 /**
- * 임시로 만든거 (2026-04-05)
- * 테넌트코드 및 API 엔드포인트 확인 및 수정 필요 (작동 제대로 안함)
+ * 테넌트 및 로그인 관련 API
  */
+export const tenantApi = {
+  /**
+   * 테넌트 코드로 테넌트 정보 조회
+   */
+  getTenantByCode: async (code: string) => {
+    const response = await authApi.get(`/v1/tenant/default/code/${code}`);
+    return response.data;
+  },
+
+  /**
+   * 도메인으로 테넌트 정보 조회
+   */
+  getTenantByDomain: async (domain: string) => {
+    const response = await authApi.get(`/v1/tenant/default/domain/${domain}`);
+    return response.data;
+  },
+};
+
 export const loginApi = {
   /**
    * 루트 사용자 로그인
@@ -25,9 +42,9 @@ export const loginApi = {
   },
 
   /**
-   * 테넌트 사용자 로그인 (필요시)
+   * 테넌트 사용자 로그인
    */
-  loginTenant: async (payload: { userId: string; password: string }, tenantCode: string = 'test') => {
+  loginTenant: async (payload: { userId: string; password: string }, tenantCode: string) => {
     const response = await authApi.post('/v1/login/default/tenant', payload, {
       headers: {
         'X-Tenant-Code': tenantCode,
@@ -36,3 +53,4 @@ export const loginApi = {
     return response.data;
   },
 };
+

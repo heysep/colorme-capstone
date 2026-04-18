@@ -51,6 +51,7 @@ project-graph.json
 .next/
 
 # local env files
+.env
 .env.local
 .env.*.local
 

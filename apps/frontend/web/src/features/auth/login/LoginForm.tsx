@@ -1,49 +1,99 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
-import { loginApi } from '../api/auth-api';
+import { authStorage } from '../lib/auth-storage';
+// @TODO: API (2026/04/18) — 실제 백엔드 로그인 연동 시 아래 import 및 관련 로직 복구
+// import { loginApi, tenantApi } from '../api/auth-api';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.png';
 import naverLogo from '@/assets/icons/naverLogo.png';
 import Link from 'next/link';
 
 export function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', description: '' });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  // @TODO: API (2026/04/18) — 테넌트 조회/연동 로직 전체 주석 처리
+  // const [tenantInfo, setTenantInfo] = useState<any>(null);
+  // useEffect(() => {
+  //   const resolveTenant = async () => {
+  //     try {
+  //       const urlParams = new URLSearchParams(window.location.search);
+  //       const tenantCodeParam = urlParams.get('tenant');
+  //       if (tenantCodeParam) {
+  //         const result = await tenantApi.getTenantByCode(tenantCodeParam);
+  //         if (result.data) {
+  //           setTenantInfo(result.data);
+  //           return;
+  //         }
+  //       }
+  //       const hostname = window.location.hostname;
+  //       if (hostname !== 'localhost' && !hostname.endsWith('colorme.com')) {
+  //         const result = await tenantApi.getTenantByDomain(hostname);
+  //         if (result.data) setTenantInfo(result.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('테넌트 조회 실패:', error);
+  //     }
+  //   };
+  //   resolveTenant();
+  // }, []);
+
+  const openInfoModal = (title: string, description: string) => {
+    setModalContent({ title, description });
+    setIsModalOpen(true);
+  };
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // 사용자 요청에 따라 root 로그인 시도
-      const result = await loginApi.loginRoot({ userId: email, password });
-      console.log('로그인 성공:', result);
-      alert('로그인에 성공했습니다!');
-      // TODO: 토큰 저장 및 메인 페이지 또는 대시보드로 이동 로직 추가
+      // @TODO: API (2026/04/18) — 실제 로그인 API 호출로 교체 필요
+      // let result;
+      // if (tenantInfo?.code) {
+      //   result = await loginApi.loginTenant({ userId: email, password }, tenantInfo.code);
+      // } else {
+      //   result = await loginApi.loginRoot({ userId: email, password });
+      // }
+
+      const user = authStorage.verifyCredentials(email, password);
+      if (!user) {
+        const exists = authStorage.existsEmail(email);
+        openInfoModal(
+          '로그인 실패',
+          exists
+            ? '비밀번호가 일치하지 않습니다.'
+            : '가입된 계정을 찾을 수 없습니다.\n회원가입을 진행해 주세요.'
+        );
+        return;
+      }
+
+      authStorage.setSession(user.email);
+      router.push('/');
     } catch (error: any) {
-      console.error('로그인 실패:', error);
-      alert(`로그인 실패: ${error.response?.data?.message || '알 수 없는 오류가 발생했습니다.'}`);
+      openInfoModal('로그인 실패', error?.message ?? '알 수 없는 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const openComingSoonModal = (featureName: string) => {
-    setModalContent({
-      title: '구현 준비중입니다.',
-      description: `현재 ${featureName} 기능은 개발 중이며\n곧 제공될 예정입니다.`,
-    });
-    setIsModalOpen(true);
+    openInfoModal(
+      '구현 준비중입니다.',
+      `현재 ${featureName} 기능은 개발 중이며\n곧 제공될 예정입니다.`
+    );
   };
 
   return (
-    <div className="w-full max-w-md space-y-10 rounded-[3rem] bg-white p-10 shadow-2xl shadow-indigo-100/50 border border-indigo-50/50 transition-all hover:shadow-indigo-200/40">
+    <div className="auth-card space-y-10">
       {/* Header */}
       <div className="text-center space-y-6">
         <Link href="/" className="inline-block cursor-pointer">
@@ -132,13 +182,12 @@ export function LoginForm() {
       <div className="pt-4 text-center">
         <p className="text-sm font-medium text-gray-400">
           계정이 없으신가요?{' '}
-          <button
-            type="button"
-            onClick={() => openComingSoonModal('회원가입')}
+          <Link
+            href="/signup"
             className="cursor-pointer font-bold text-primary hover:underline"
           >
             회원가입
-          </button>
+          </Link>
         </p>
       </div>
 
