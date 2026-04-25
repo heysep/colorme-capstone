@@ -95,23 +95,23 @@ export function LoginForm() {
   };
 
   return (
-    <div className="auth-card space-y-10">
+    <div className="auth-card space-y-6 p-8">
       {/* Header */}
-      <div className="text-center space-y-6">
+      <div className="text-center space-y-4">
         <Link href="/" className="inline-block cursor-pointer">
-          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-accent p-0.5 shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-             <div className="flex h-full w-full items-center justify-center rounded-[1.4rem] bg-white text-4xl">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-[1.4rem] bg-gradient-to-br from-primary to-accent p-0.5 shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+             <div className="flex h-full w-full items-center justify-center rounded-[1.2rem] bg-white text-3xl dark:bg-[var(--color-auth-surface)]">
                 🎨
              </div>
           </div>
         </Link>
-        <h1 className="text-3xl font-black tracking-tighter text-gray-900">
+        <h1 className="text-2xl font-black tracking-tighter text-gray-900 dark:text-gray-100">
           ColorMe <span className="text-primary italic">로그인</span>
         </h1>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleLogin} className="space-y-6">
+      <form onSubmit={handleLogin} className="space-y-4">
         <Input
           id="email"
           label="Email"
@@ -123,7 +123,7 @@ export function LoginForm() {
         />
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-             <label htmlFor="password" title="Password" className="text-sm font-semibold text-gray-700">Password</label>
+             <label htmlFor="password" title="Password" className="text-sm font-semibold text-[var(--color-auth-label)]">Password</label>
              <button
                type="button"
                onClick={() => openComingSoonModal('비밀번호 찾기')}
@@ -147,25 +147,25 @@ export function LoginForm() {
           disabled={isLoading}
           variant="primary"
           size="xl"
-          className="h-16 w-full cursor-pointer rounded-2xl text-xl font-black shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95"
+          className="h-14 w-full cursor-pointer rounded-2xl text-lg font-black shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95"
         >
           {isLoading ? '로그인 중...' : '로그인'}
         </Button>
       </form>
 
       {/* Divider */}
-      <div className="relative flex items-center py-4">
-        <div className="flex-grow border-t border-gray-100"></div>
-        <span className="mx-4 flex-shrink text-xs font-bold text-gray-300 uppercase tracking-widest">OR</span>
-        <div className="flex-grow border-t border-gray-100"></div>
+      <div className="relative flex items-center py-1">
+        <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]"></div>
+        <span className="mx-4 flex-shrink text-xs font-bold text-gray-300 uppercase tracking-widest dark:text-gray-500">OR</span>
+        <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]"></div>
       </div>
 
       {/* Social Login */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-3">
         <button
           type="button"
           onClick={() => openComingSoonModal('Google 로그인')}
-          className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[#fdfcfd] px-4 font-bold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95"
+          className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
         >
           <Image src={googleLogo} alt="Google" width={20} height={20} />
           <span>Continue with Google</span>
@@ -173,7 +173,7 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => openComingSoonModal('Naver 로그인')}
-          className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[#fdfcfd] px-4 font-bold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95"
+          className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
         >
           <Image src={naverLogo} alt="Naver" width={20} height={20} />
           <span>Continue with Naver</span>
@@ -181,8 +181,8 @@ export function LoginForm() {
       </div>
 
       {/* Footer */}
-      <div className="pt-4 text-center">
-        <p className="text-sm font-medium text-gray-400">
+      <div className="pt-2 text-center">
+        <p className="text-sm font-medium text-gray-400 dark:text-gray-500">
           계정이 없으신가요?{' '}
           <Link
             href="/signup"

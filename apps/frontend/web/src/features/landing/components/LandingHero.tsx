@@ -20,7 +20,7 @@ export function LandingHero() {
         <div className="absolute bottom-1/4 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-purple-500/10 mix-blend-multiply blur-[120px] animate-float [animation-delay:4s]" />
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -z-20 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 opacity-20">
+      <div className="absolute top-1/2 left-1/2 -z-20 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 opacity-20 dark:opacity-10">
         <img
           src="/hero_ai_fashion_beauty_1771840966571.png"
           alt="AI Fashion & Beauty"
@@ -56,7 +56,8 @@ export function LandingHero() {
           </Button>
           <button
             type="button"
-            className="h-20 rounded-3xl border-2 border-primary/10 bg-white/50 px-12 text-xl font-bold text-primary backdrop-blur-md transition-all hover:bg-primary/5 hover:border-primary/20 active:scale-95"
+            onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+            className="h-20 rounded-3xl border-2 border-primary/15 bg-white/60 px-12 text-xl font-bold text-primary backdrop-blur-md transition-all hover:bg-primary/5 hover:border-primary/25 active:scale-95 dark:border-primary/25 dark:bg-white/5 dark:hover:bg-white/10"
           >
             기능 살펴보기
           </button>

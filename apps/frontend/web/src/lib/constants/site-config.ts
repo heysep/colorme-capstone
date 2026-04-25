@@ -3,7 +3,7 @@
  */
 
 export const siteConfig = {
-  brand: 'Capstone Project',
+  brand: 'ColorMe',
   tagline: 'AI로 나만의 색과 스타일 찾기',
   valueProp:
     '패션·뷰티 도메인에 특화된 AI 기반 개인화 서비스를 제공합니다.',
@@ -26,6 +26,6 @@ export const siteConfig = {
     },
   ],
   footer: {
-    copyright: '© Capstone Project. All rights reserved.',
+    copyright: '© ColorMe. All rights reserved.',
   },
 } as const;

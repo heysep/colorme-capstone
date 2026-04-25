@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #6366f1;
   --color-secondary: #4f46e5;
@@ -23,6 +25,9 @@
   --color-auth-muted: #9ca3af;       /* gray-400 */
   --color-auth-divider: #f3f4f6;     /* gray-100 */
 
+  /* 기본 border-color (Tailwind v4 호환용) */
+  --color-border-default: #e5e7eb;   /* gray-200 */
+
   --font-display: "Outfit", "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
 
@@ -43,9 +48,28 @@
   --animate-reveal: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* 다크 테마 토큰 오버라이드 */
+.dark {
+  --color-background: #0a0a0b;
+  --color-foreground: #f5f5f7;
+  --color-muted: #9ca3af;
+
+  --color-auth-surface: #141417;
+  --color-auth-page-bg: #0a0a0b;
+  --color-auth-input-bg: #1a1a1e;
+  --color-auth-input-border: rgba(255, 255, 255, 0.08);
+  --color-auth-input-text: #f3f4f6;
+  --color-auth-label: #d1d5db;
+  --color-auth-placeholder: #6b7280;
+  --color-auth-muted: #6b7280;
+  --color-auth-divider: #27272a;
+
+  --color-border-default: #27272a;
+}
+
 @layer base {
   * {
-    border-color: #e5e7eb; /* Tailwind gray-200 */
+    border-color: var(--color-border-default);
   }
   body {
     background-color: var(--color-background);
@@ -90,6 +114,10 @@
     padding: 5rem 1.5rem;
     background-color: var(--color-auth-page-bg);
     position: relative;
+  }
+  /* 로그인 전용 컴팩트 셸 — 세로 스크롤 방지용 패딩 축소 */
+  .auth-page-shell.compact {
+    padding: 1.5rem;
   }
   .auth-page-shell::before,
   .auth-page-shell::after {
@@ -241,6 +269,62 @@
     border-radius: 9999px;
     background-color: var(--color-primary);
     color: #ffffff;
+  }
+
+  /* ──────────────────── 다크 테마 유틸리티 오버라이드 ──────────────────── */
+  .dark .glass {
+    background-color: rgba(20, 20, 23, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .auth-page-shell::before {
+    background-color: rgba(99, 102, 241, 0.12);
+  }
+  .dark .auth-page-shell::after {
+    background-color: rgba(236, 72, 153, 0.1);
+  }
+
+  .dark .auth-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  }
+  .dark .auth-card:hover {
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.35);
+  }
+
+  .dark .auth-select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  }
+  .dark .auth-select:focus {
+    background-color: var(--color-auth-surface);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  }
+
+  .dark .section-shell::before {
+    background-color: rgba(99, 102, 241, 0.1);
+  }
+  .dark .section-shell::after {
+    background-color: rgba(236, 72, 153, 0.08);
+  }
+
+  .dark .panel-card {
+    background-color: var(--color-auth-surface);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .option-card {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+  }
+  .dark .option-card:hover {
+    border-color: rgba(99, 102, 241, 0.45);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  .dark .option-card[data-selected="true"] {
+    background-color: rgba(99, 102, 241, 0.12);
+    box-shadow: 0 10px 25px -10px rgba(99, 102, 241, 0.45);
   }
 }
 

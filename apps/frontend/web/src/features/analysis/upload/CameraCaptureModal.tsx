@@ -76,12 +76,12 @@ export function CameraCaptureModal({ isOpen, onClose, onCapture }: Props) {
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative flex w-full max-w-2xl flex-col gap-5 overflow-hidden rounded-[2rem] bg-white p-8 shadow-2xl">
+      <div className="relative flex w-full max-w-2xl flex-col gap-5 overflow-hidden rounded-[2rem] bg-white p-8 shadow-2xl dark:bg-[var(--color-auth-surface)]">
         <div className="text-center">
-          <h3 className="text-2xl font-black tracking-tight text-gray-900">
+          <h3 className="text-2xl font-black tracking-tight text-gray-900 dark:text-gray-100">
             카메라로 촬영하기
           </h3>
-          <p className="mt-2 text-sm font-medium text-gray-500">
+          <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
             얼굴이 정면으로 잘 보이도록 위치를 맞춰주세요.
           </p>
         </div>

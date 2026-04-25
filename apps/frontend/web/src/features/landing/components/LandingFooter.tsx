@@ -3,7 +3,7 @@ import { siteConfig } from '@/lib/constants/site-config';
 export function LandingFooter() {
   return (
     <footer
-      className="bg-foreground px-6 py-20 text-white md:py-32"
+      className="bg-[#0a0a0b] px-6 py-20 text-white md:py-32"
       role="contentinfo"
       aria-label="푸터"
     >
@@ -12,8 +12,10 @@ export function LandingFooter() {
           <span className="font-display text-4xl font-black tracking-tighter">
             <span className="text-gradient brightness-150">{siteConfig.brand}</span>
           </span>
-          <p className="max-w-xs text-center text-lg font-bold leading-relaxed text-white/40 md:text-left">
-            최첨단 AI 기술로 당신의 본연의 아름다움을 발견하고 가장 잘 어울리는 스타일을 제안합니다.
+          <p className="max-w-md text-center text-lg font-bold leading-relaxed text-white/40 md:text-left">
+            최첨단 AI 기술로 당신의 본연의 아름다움을 발견하고 
+            <br/>
+            가장 잘 어울리는 스타일을 제안합니다.
           </p>
         </div>
         <div className="flex flex-col items-center gap-12 md:items-end">

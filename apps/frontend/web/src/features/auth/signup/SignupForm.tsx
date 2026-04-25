@@ -26,9 +26,9 @@ type FormState = {
 };
 
 const PASSWORD_POLICY_TEXT =
-  '비밀번호는 8자 이상면서 영어와 숫자 및 특수문자를 포함하여야 합니다.';
+  '비밀번호는 8자 이상면서 영어와 숫자 및 특수문자를\n포함하여야 합니다.';
 const USERNAME_POLICY_TEXT =
-  '사용자명은 영숫자 또는 하이픈만 포함할 수 있으며, 하이픈으로 시작하거나 끝날 수 없습니다.';
+  '사용자명은 영숫자 또는 하이픈만 포함할 수 있으며,\n하이픈으로 시작하거나 끝날 수 없습니다.';
 
 const USERNAME_REGEX = /^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/;
 
@@ -124,7 +124,7 @@ export function SignupForm() {
       <div className="auth-card space-y-8">
         {/* Top-right Sign in link */}
         <div className="flex items-center justify-end text-sm">
-          <span className="text-gray-400">이미 계정이 있으신가요?</span>
+          <span className="text-gray-400 dark:text-gray-500">이미 계정이 있으신가요?</span>
           <Link href="/login" className="ml-2 font-bold text-primary hover:underline">
             Sign in →
           </Link>
@@ -134,12 +134,12 @@ export function SignupForm() {
         <div className="text-center space-y-6">
           <Link href="/" className="inline-block cursor-pointer">
             <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-accent p-0.5 shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-              <div className="flex h-full w-full items-center justify-center rounded-[1.4rem] bg-white text-4xl">
+              <div className="flex h-full w-full items-center justify-center rounded-[1.4rem] bg-white text-4xl dark:bg-[var(--color-auth-surface)]">
                 🎨
               </div>
             </div>
           </Link>
-          <h1 className="text-3xl font-black tracking-tighter text-gray-900">
+          <h1 className="text-3xl font-black tracking-tighter text-gray-900 dark:text-gray-100">
             ColorMe <span className="text-primary italic">회원가입</span>
           </h1>
         </div>
@@ -149,7 +149,7 @@ export function SignupForm() {
           <button
             type="button"
             onClick={() => setComingSoon('Google 회원가입')}
-            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[#fdfcfd] px-4 font-bold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95"
+            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
           >
             <Image src={googleLogo} alt="Google" width={20} height={20} />
             <span>Continue with Google</span>
@@ -157,7 +157,7 @@ export function SignupForm() {
           <button
             type="button"
             onClick={() => setComingSoon('Naver 회원가입')}
-            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[#fdfcfd] px-4 font-bold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95"
+            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
           >
             <Image src={naverLogo} alt="Naver" width={20} height={20} />
             <span>Continue with Naver</span>
@@ -166,11 +166,11 @@ export function SignupForm() {
 
         {/* Divider */}
         <div className="relative flex items-center py-2">
-          <div className="flex-grow border-t border-gray-100" />
-          <span className="mx-4 flex-shrink text-xs font-bold text-gray-300 uppercase tracking-widest">
+          <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]" />
+          <span className="mx-4 flex-shrink text-xs font-bold text-gray-300 uppercase tracking-widest dark:text-gray-500">
             OR
           </span>
-          <div className="flex-grow border-t border-gray-100" />
+          <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]" />
         </div>
 
         {/* Form */}
@@ -197,7 +197,7 @@ export function SignupForm() {
               onChange={(e) => update('password', e.target.value)}
               required
             />
-            <p className="px-1 text-xs text-gray-400">{PASSWORD_POLICY_TEXT}</p>
+            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">{PASSWORD_POLICY_TEXT}</p>
           </div>
 
           <div className="space-y-2">
@@ -235,13 +235,13 @@ export function SignupForm() {
               onChange={(e) => update('username', e.target.value)}
               required
             />
-            <p className="px-1 text-xs text-gray-400">{USERNAME_POLICY_TEXT}</p>
+            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">{USERNAME_POLICY_TEXT}</p>
           </div>
 
           <div className="flex w-full flex-col gap-2">
             <label
               htmlFor="signup-country"
-              className="text-sm font-semibold text-gray-700 select-none"
+              className="text-sm font-semibold text-[var(--color-auth-label)] select-none"
             >
               국가
             </label>
@@ -274,10 +274,11 @@ export function SignupForm() {
             {submitting ? '계정 생성 중...' : '계정 만들기'}
           </Button>
 
-          <p className="pt-2 text-center text-xs font-medium text-gray-400">
+          <p className="pt-2 text-center text-xs font-medium text-gray-400 dark:text-gray-500">
             계정을 만들면{' '}
             <span className="font-bold text-primary">서비스 약관</span> 및{' '}
             <span className="font-bold text-primary">개인정보 보호정책</span>에
+            <br />
             동의하는 것으로 간주됩니다.
           </p>
         </form>
