@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="auth-page-shell">
+    <div className="auth-page-shell compact">
       <div className="z-10 w-full flex justify-center">
         <LoginForm />
       </div>

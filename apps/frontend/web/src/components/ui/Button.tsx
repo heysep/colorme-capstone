@@ -44,7 +44,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type="button"
         disabled={disabled}
         className={[
-          'cursor-pointer rounded-lg font-medium transition-colors duration-200',
+          'cursor-pointer font-medium transition-colors duration-200',
           'focus:outline-none focus:ring-2 focus:ring-offset-2',
           'disabled:cursor-not-allowed disabled:opacity-50',
           variantStyles[variant],

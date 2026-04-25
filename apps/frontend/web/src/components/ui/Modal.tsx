@@ -37,7 +37,7 @@ export function Modal({ isOpen, onClose, title, description }: ModalProps) {
       />
 
       {/* Modal Content */}
-      <div className="relative flex w-full max-w-sm transform flex-col gap-6 overflow-hidden rounded-[2rem] bg-white p-10 text-center shadow-2xl transition-all">
+      <div className="relative flex w-full max-w-sm transform flex-col gap-6 overflow-hidden rounded-[2rem] bg-white p-10 text-center shadow-2xl transition-all dark:bg-[var(--color-auth-surface)]">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-accent/10">
           <div className="h-10 w-10 text-accent">
             <svg
@@ -57,10 +57,10 @@ export function Modal({ isOpen, onClose, title, description }: ModalProps) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-2xl font-black tracking-tight text-gray-900">
+          <h3 className="text-2xl font-black tracking-tight text-gray-900 dark:text-gray-100">
             {title}
           </h3>
-          <p className="text-lg font-medium leading-relaxed text-gray-500 whitespace-pre-wrap">
+          <p className="text-lg font-medium leading-relaxed text-gray-500 whitespace-pre-wrap dark:text-gray-400">
             {description}
           </p>
         </div>

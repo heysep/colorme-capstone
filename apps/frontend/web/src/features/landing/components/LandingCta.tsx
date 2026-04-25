@@ -34,14 +34,14 @@ export function LandingCta() {
               <Button
                 variant="white"
                 size="lg"
-                className="h-20 w-full rounded-[2rem] px-14 text-xl font-black text-primary transition-all hover:scale-105 active:scale-95"
+                className="group relative h-20 w-full rounded-3xl px-12 text-xl font-black text-primary shadow-[0_20px_40px_-10px_rgba(255,255,255,0.35)] transition-all hover:scale-105 hover:shadow-[0_25px_50px_-12px_rgba(255,255,255,0.5)] active:scale-95"
               >
                 {siteConfig.ctaLabel}
               </Button>
             </Link>
             <button
               type="button"
-              className="h-20 w-full rounded-[2rem] border-2 border-white/10 bg-white/5 px-14 text-xl font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/20 active:scale-95 sm:w-auto"
+              className="h-20 w-full rounded-3xl border-2 border-white/15 bg-white/5 px-12 text-xl font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/25 active:scale-95 sm:w-auto"
             >
               커뮤니티 가입하기
             </button>

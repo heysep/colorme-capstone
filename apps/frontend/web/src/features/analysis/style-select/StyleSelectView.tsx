@@ -30,13 +30,13 @@ export function StyleSelectView() {
 
   return (
     <div className="section-shell">
-      <div className="z-10 mx-auto w-full max-w-6xl rounded-[3rem] border border-indigo-50/60 bg-white/60 p-8 shadow-xl shadow-indigo-100/30 backdrop-blur-sm sm:p-12">
+      <div className="z-10 mx-auto w-full max-w-6xl rounded-[3rem] border border-indigo-50/60 bg-white/60 p-8 shadow-xl shadow-indigo-100/30 backdrop-blur-sm sm:p-12 dark:border-white/5 dark:bg-white/5 dark:shadow-black/30">
       <div className="flex w-full flex-col items-center gap-10">
         <header className="space-y-3 text-center">
           <h1 className="text-gradient text-3xl font-black tracking-tight sm:text-4xl">
             선호하는 스타일을 선택해주세요
           </h1>
-          <p className="text-sm font-medium text-gray-500 sm:text-base">
+          <p className="text-sm font-medium text-gray-500 sm:text-base dark:text-gray-400">
             원하는 스타일을 선택하면 더 정확한 추천을 받을 수 있습니다 (복수 선택 가능)
           </p>
         </header>
@@ -74,8 +74,8 @@ export function StyleSelectView() {
                       <span aria-hidden>{opt.emoji}</span>
                     </div>
                     <div className="mt-2 space-y-1">
-                      <p className="text-lg font-black text-gray-900">{opt.label}</p>
-                      <p className="text-sm font-medium text-gray-500">
+                      <p className="text-lg font-black text-gray-900 dark:text-gray-100">{opt.label}</p>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         {opt.description}
                       </p>
                     </div>

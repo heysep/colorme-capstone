@@ -49,7 +49,7 @@ export function ConfirmModal({
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
-      <div className="relative flex w-full max-w-lg transform flex-col gap-6 overflow-hidden rounded-[2rem] bg-white p-10 text-center shadow-2xl transition-all">
+      <div className="relative flex w-full max-w-lg transform flex-col gap-6 overflow-hidden rounded-[2rem] bg-white p-10 text-center shadow-2xl transition-all dark:bg-[var(--color-auth-surface)]">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +64,8 @@ export function ConfirmModal({
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-2xl font-black tracking-tight text-gray-900">{title}</h3>
-          <p className="text-base font-medium leading-relaxed text-gray-500 whitespace-pre-wrap">
+          <h3 className="text-2xl font-black tracking-tight text-gray-900 dark:text-gray-100">{title}</h3>
+          <p className="text-base font-medium leading-relaxed text-gray-500 whitespace-pre-wrap dark:text-gray-400">
             {description}
           </p>
         </div>

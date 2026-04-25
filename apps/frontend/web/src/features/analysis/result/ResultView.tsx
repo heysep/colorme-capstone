@@ -55,7 +55,7 @@ export function ResultView() {
               analysisStorage.reset();
               router.push('/');
             }}
-            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-100"
+            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -73,13 +73,13 @@ export function ResultView() {
 
         {/* Personal color card */}
         <section className="panel-card">
-          <h2 className="mb-6 text-xl font-black text-gray-900 sm:text-2xl">
+          <h2 className="mb-6 text-xl font-black text-gray-900 sm:text-2xl dark:text-gray-100">
             당신의 퍼스널 컬러
           </h2>
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,260px)_1fr]">
             {/* Uploaded image */}
-            <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
+            <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 dark:border-[var(--color-auth-divider)] dark:bg-white/5">
               {state.photoDataUrl ? (
                 <img
                   src={state.photoDataUrl}
@@ -87,7 +87,7 @@ export function ResultView() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-64 items-center justify-center text-sm text-gray-400">
+                <div className="flex h-64 items-center justify-center text-sm text-gray-400 dark:text-gray-500">
                   이미지 없음
                 </div>
               )}
@@ -105,20 +105,20 @@ export function ResultView() {
               >
                 {season.label}
               </div>
-              <p className="text-base font-medium text-gray-600">
+              <p className="text-base font-medium text-gray-600 dark:text-gray-300">
                 {season.description}
               </p>
 
               <div>
-                <p className="mb-3 text-sm font-black text-gray-700">추천 컬러 팔레트</p>
+                <p className="mb-3 text-sm font-black text-gray-700 dark:text-gray-200">추천 컬러 팔레트</p>
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
                   {season.palette.map((c) => (
                     <div key={c.name} className="flex flex-col items-center gap-2">
                       <div
-                        className="h-20 w-full rounded-2xl border border-black/5 shadow-sm"
+                        className="h-20 w-full rounded-2xl border border-black/5 shadow-sm dark:border-white/10"
                         style={{ backgroundColor: c.hex }}
                       />
-                      <span className="text-xs font-semibold text-gray-600">
+                      <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
                         {c.name}
                       </span>
                     </div>
@@ -132,7 +132,7 @@ export function ResultView() {
         {/* Recommended outfits */}
         <section className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-xl font-black text-gray-900 sm:text-2xl">
+            <h2 className="text-xl font-black text-gray-900 sm:text-2xl dark:text-gray-100">
               추천 스타일 코디
             </h2>
             {appliedStyles.length > 0 && (
@@ -156,9 +156,9 @@ export function ResultView() {
             {visibleItems.map((item) => (
               <li
                 key={item.id}
-                className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
+                className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-[var(--color-auth-divider)] dark:bg-[var(--color-auth-surface)]"
               >
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-100 dark:bg-white/5">
                   <img
                     src={item.imageUrl}
                     alt={item.name}
@@ -170,11 +170,11 @@ export function ResultView() {
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-4">
                   <div>
-                    <p className="text-xs font-bold text-gray-400">{item.brand}</p>
-                    <p className="mt-0.5 text-base font-black text-gray-900">
+                    <p className="text-xs font-bold text-gray-400 dark:text-gray-500">{item.brand}</p>
+                    <p className="mt-0.5 text-base font-black text-gray-900 dark:text-gray-100">
                       {item.name}
                     </p>
-                    <p className="mt-1 text-sm font-bold text-gray-700">
+                    <p className="mt-1 text-sm font-bold text-gray-700 dark:text-gray-300">
                       {item.price}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ export function ResultView() {
                     <button
                       type="button"
                       onClick={() => openComingSoon('구매하기')}
-                      className="h-11 w-full cursor-pointer rounded-xl border border-gray-200 bg-white text-sm font-bold text-gray-800 transition-all hover:border-primary/30 hover:bg-gray-50 active:scale-[0.99]"
+                      className="h-11 w-full cursor-pointer rounded-xl border border-gray-200 bg-white text-sm font-bold text-gray-800 transition-all hover:border-primary/30 hover:bg-gray-50 active:scale-[0.99] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:bg-white/10"
                     >
                       구매하기
                     </button>
@@ -201,12 +201,12 @@ export function ResultView() {
         </section>
 
         {/* Actions */}
-        <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-6">
+        <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-6 dark:border-[var(--color-auth-divider)]">
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => openComingSoon('공유')}
-              className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-bold text-gray-700 transition-all hover:bg-gray-50"
+              className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-bold text-gray-700 transition-all hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:bg-white/10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +227,7 @@ export function ResultView() {
             <button
               type="button"
               onClick={() => openComingSoon('저장')}
-              className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-bold text-gray-700 transition-all hover:bg-gray-50"
+              className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-bold text-gray-700 transition-all hover:bg-gray-50 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:bg-white/10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

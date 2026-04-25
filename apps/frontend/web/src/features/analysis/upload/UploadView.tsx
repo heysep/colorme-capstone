@@ -103,13 +103,13 @@ export function UploadView() {
 
   return (
     <div className="section-shell">
-      <div className="z-10 mx-auto w-full max-w-4xl rounded-[3rem] border border-indigo-50/60 bg-white/60 p-8 shadow-xl shadow-indigo-100/30 backdrop-blur-sm sm:p-12">
+      <div className="z-10 mx-auto w-full max-w-4xl rounded-[3rem] border border-indigo-50/60 bg-white/60 p-8 shadow-xl shadow-indigo-100/30 backdrop-blur-sm sm:p-12 dark:border-white/5 dark:bg-white/5 dark:shadow-black/30">
       <div className="flex w-full flex-col items-center gap-10">
         <header className="space-y-3 text-center">
           <h1 className="text-gradient text-3xl font-black tracking-tight sm:text-4xl">
             나에게 맞는 컬러 찾기
           </h1>
-          <p className="max-w-xl text-sm font-medium leading-relaxed text-gray-500 sm:text-base">
+          <p className="max-w-xl text-sm font-medium leading-relaxed text-gray-500 sm:text-base dark:text-gray-400">
             사진을 업로드하거나 촬영하여 퍼스널 컬러 분석과 가상 피팅을 받아보세요.
             가장 정확한 결과를 위해 자연광 아래 정면으로 찍은 선명한 사진을 사용해주세요.
           </p>
@@ -119,7 +119,7 @@ export function UploadView() {
           {/* Preview */}
           {preview && (
             <div className="flex flex-col items-center gap-3">
-              <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+              <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-white/10 dark:bg-[var(--color-auth-surface)]">
                 <img
                   src={preview}
                   alt="업로드한 사진 미리보기"
@@ -129,7 +129,7 @@ export function UploadView() {
               <button
                 type="button"
                 onClick={resetImage}
-                className="cursor-pointer text-xs font-bold text-gray-500 underline underline-offset-4 hover:text-gray-700"
+                className="cursor-pointer text-xs font-bold text-gray-500 underline underline-offset-4 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
                 다시 선택하기
               </button>
@@ -140,13 +140,13 @@ export function UploadView() {
           {preview && (
             <div>
               {checking && (
-                <div className="flex items-center justify-center gap-2 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 text-sm font-bold text-indigo-700">
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 text-sm font-bold text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
                   <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-indigo-500" />
                   사진 품질을 확인하는 중입니다...
                 </div>
               )}
               {!checking && quality && quality.issues.length === 0 && (
-                <div className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 text-sm font-bold text-emerald-700">
+                <div className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 text-sm font-bold text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -173,8 +173,8 @@ export function UploadView() {
                         key={issue.code}
                         className={`flex gap-3 rounded-2xl border p-4 ${
                           isError
-                            ? 'border-red-100 bg-red-50/70'
-                            : 'border-amber-100 bg-amber-50/60'
+                            ? 'border-red-100 bg-red-50/70 dark:border-red-500/30 dark:bg-red-500/10'
+                            : 'border-amber-100 bg-amber-50/60 dark:border-amber-500/30 dark:bg-amber-500/10'
                         }`}
                       >
                         <svg
@@ -196,12 +196,12 @@ export function UploadView() {
                         <div className="space-y-1">
                           <p
                             className={`text-sm font-black ${
-                              isError ? 'text-red-700' : 'text-amber-800'
+                              isError ? 'text-red-700 dark:text-red-300' : 'text-amber-800 dark:text-amber-300'
                             }`}
                           >
                             {issue.title}
                           </p>
-                          <p className="text-xs font-medium leading-relaxed text-gray-600">
+                          <p className="text-xs font-medium leading-relaxed text-gray-600 dark:text-gray-400">
                             {issue.description}
                           </p>
                         </div>
@@ -214,8 +214,8 @@ export function UploadView() {
           )}
 
           {/* 유의사항 */}
-          <div className="rounded-2xl border border-amber-100 bg-amber-50/60 p-5">
-            <div className="mb-3 flex items-center gap-2 text-amber-700">
+          <div className="rounded-2xl border border-amber-100 bg-amber-50/60 p-5 dark:border-amber-500/30 dark:bg-amber-500/10">
+            <div className="mb-3 flex items-center gap-2 text-amber-700 dark:text-amber-300">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -232,7 +232,7 @@ export function UploadView() {
               </svg>
               <span className="text-sm font-black">이용 전 유의사항</span>
             </div>
-            <ul className="space-y-2 text-xs leading-relaxed text-gray-600 sm:text-sm">
+            <ul className="space-y-2 text-xs leading-relaxed text-gray-600 sm:text-sm dark:text-gray-400">
               {NOTICE_ITEMS.map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-[0.35rem] h-1 w-1 shrink-0 rounded-full bg-amber-500" />

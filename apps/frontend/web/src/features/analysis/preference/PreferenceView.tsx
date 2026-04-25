@@ -38,7 +38,7 @@ export function PreferenceView() {
           <h1 className="text-gradient text-3xl font-black tracking-tight sm:text-4xl">
             선호도를 코디 추천에 반영할까요?
           </h1>
-          <p className="text-sm font-medium text-gray-500 sm:text-base">
+          <p className="text-sm font-medium text-gray-500 sm:text-base dark:text-gray-400">
             선택한 스타일 선호도를 바탕으로 맞춤형 코디를 추천받을 수 있습니다
           </p>
         </header>
@@ -74,13 +74,13 @@ export function PreferenceView() {
                   <span aria-hidden>✨</span>
                 </div>
                 <div className="mt-2 space-y-1">
-                  <p className="text-lg font-black text-gray-900">선호도 포함</p>
-                  <p className="px-2 text-sm font-medium leading-relaxed text-gray-500">
+                  <p className="text-lg font-black text-gray-900 dark:text-gray-100">선호도 포함</p>
+                  <p className="px-2 text-sm font-medium leading-relaxed text-gray-500 dark:text-gray-400">
                     퍼스널 컬러와 선택한 스타일을 모두 반영한 맞춤형 코디를 추천합니다
                   </p>
                 </div>
-                <div className="mt-3 w-full rounded-2xl bg-gray-50 p-4">
-                  <p className="mb-2 text-xs font-bold text-gray-400">선택한 스타일:</p>
+                <div className="mt-3 w-full rounded-2xl bg-gray-50 p-4 dark:bg-white/5">
+                  <p className="mb-2 text-xs font-bold text-gray-400 dark:text-gray-500">선택한 스타일:</p>
                   {styles.length > 0 ? (
                     <div className="flex flex-wrap justify-center gap-2">
                       {styles.map((s) => (
@@ -93,7 +93,7 @@ export function PreferenceView() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs font-medium text-gray-400">
+                    <p className="text-xs font-medium text-gray-400 dark:text-gray-500">
                       선택된 스타일이 없습니다
                     </p>
                   )}
@@ -127,13 +127,13 @@ export function PreferenceView() {
                   <span aria-hidden>🎯</span>
                 </div>
                 <div className="mt-2 space-y-1">
-                  <p className="text-lg font-black text-gray-900">퍼스널 컬러만</p>
-                  <p className="px-2 text-sm font-medium leading-relaxed text-gray-500">
+                  <p className="text-lg font-black text-gray-900 dark:text-gray-100">퍼스널 컬러만</p>
+                  <p className="px-2 text-sm font-medium leading-relaxed text-gray-500 dark:text-gray-400">
                     퍼스널 컬러에 기반한 다양한 스타일의 코디를 추천합니다
                   </p>
                 </div>
-                <div className="mt-3 w-full rounded-2xl bg-gray-50 p-4">
-                  <p className="text-xs font-medium leading-relaxed text-gray-500">
+                <div className="mt-3 w-full rounded-2xl bg-gray-50 p-4 dark:bg-white/5">
+                  <p className="text-xs font-medium leading-relaxed text-gray-500 dark:text-gray-400">
                     선호도를 제외하고 퍼스널 컬러에 어울리는 모든 스타일을 볼 수 있습니다
                   </p>
                 </div>

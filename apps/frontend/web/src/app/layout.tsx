@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,9 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${inter.variable} ${outfit.variable}`}>
+    <html
+      lang="ko"
+      className={`${inter.variable} ${outfit.variable}`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen antialiased">
-        {children}
+        <ThemeProvider>
+          <ThemeToggle />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
