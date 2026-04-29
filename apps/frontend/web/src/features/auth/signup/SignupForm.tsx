@@ -10,11 +10,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
-import {
-  COUNTRIES,
-  type CountryCode,
-  authStorage,
-} from '../lib/auth-storage';
+import { COUNTRIES, type CountryCode, authStorage } from '../lib/auth-storage';
 // @TODO: API (2026/04/18) — 실제 회원가입 API 연동 시 signupApi import 및 호출부 복구
 
 type FormState = {
@@ -53,7 +49,10 @@ export function SignupForm() {
   const [submitting, setSubmitting] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState({ title: '', description: '' });
+  const [errorMessage, setErrorMessage] = useState({
+    title: '',
+    description: '',
+  });
   const [comingSoon, setComingSoon] = useState<string | null>(null);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
@@ -103,7 +102,10 @@ export function SignupForm() {
       });
       setSuccessOpen(true);
     } catch (err: any) {
-      openError('회원가입 실패', err?.message ?? '알 수 없는 오류가 발생했습니다.');
+      openError(
+        '회원가입 실패',
+        err?.message ?? '알 수 없는 오류가 발생했습니다.',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -124,8 +126,13 @@ export function SignupForm() {
       <div className="auth-card space-y-8">
         {/* Top-right Sign in link */}
         <div className="flex items-center justify-end text-sm">
-          <span className="text-gray-400 dark:text-gray-500">이미 계정이 있으신가요?</span>
-          <Link href="/login" className="ml-2 font-bold text-primary hover:underline">
+          <span className="text-gray-400 dark:text-gray-500">
+            이미 계정이 있으신가요?
+          </span>
+          <Link
+            href="/login"
+            className="ml-2 font-bold text-primary hover:underline"
+          >
             Sign in →
           </Link>
         </div>
@@ -142,35 +149,6 @@ export function SignupForm() {
           <h1 className="text-3xl font-black tracking-tighter text-gray-900 dark:text-gray-100">
             ColorMe <span className="text-primary italic">회원가입</span>
           </h1>
-        </div>
-
-        {/* Social Signup */}
-        <div className="grid grid-cols-1 gap-4">
-          <button
-            type="button"
-            onClick={() => setComingSoon('Google 회원가입')}
-            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
-          >
-            <Image src={googleLogo} alt="Google" width={20} height={20} />
-            <span>Continue with Google</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setComingSoon('Naver 회원가입')}
-            className="flex h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-gray-50 bg-[var(--color-auth-input-bg)] px-4 font-bold text-[var(--color-auth-label)] transition-all hover:bg-gray-50 hover:border-gray-100 active:scale-95 dark:border-white/5 dark:hover:bg-white/5 dark:hover:border-white/10"
-          >
-            <Image src={naverLogo} alt="Naver" width={20} height={20} />
-            <span>Continue with Naver</span>
-          </button>
-        </div>
-
-        {/* Divider */}
-        <div className="relative flex items-center py-2">
-          <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]" />
-          <span className="mx-4 flex-shrink text-xs font-bold text-gray-300 uppercase tracking-widest dark:text-gray-500">
-            OR
-          </span>
-          <div className="flex-grow border-t border-gray-100 dark:border-[var(--color-auth-divider)]" />
         </div>
 
         {/* Form */}
@@ -197,7 +175,9 @@ export function SignupForm() {
               onChange={(e) => update('password', e.target.value)}
               required
             />
-            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">{PASSWORD_POLICY_TEXT}</p>
+            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">
+              {PASSWORD_POLICY_TEXT}
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -235,7 +215,9 @@ export function SignupForm() {
               onChange={(e) => update('username', e.target.value)}
               required
             />
-            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">{USERNAME_POLICY_TEXT}</p>
+            <p className="px-1 text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line">
+              {USERNAME_POLICY_TEXT}
+            </p>
           </div>
 
           <div className="flex w-full flex-col gap-2">
@@ -248,7 +230,9 @@ export function SignupForm() {
             <select
               id="signup-country"
               value={form.country}
-              onChange={(e) => update('country', e.target.value as CountryCode | '')}
+              onChange={(e) =>
+                update('country', e.target.value as CountryCode | '')
+              }
               required
               data-placeholder={form.country === '' ? 'true' : 'false'}
               className="auth-select"
