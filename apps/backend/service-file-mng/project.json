@@ -21,14 +21,14 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+        "commands": ["node --env-file=.env dist/apps/backend/service-file-mng/main.js"]
       },
       "configurations": {
         "development": {
-          "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+          "commands": ["node --env-file=.env dist/apps/backend/service-file-mng/main.js"]
         },
         "production": {
-          "commands": ["doppler run -- node dist/apps/backend/service-file-mng/main.js"]
+          "commands": ["node --env-file=.env dist/apps/backend/service-file-mng/main.js"]
         }
       }
     }

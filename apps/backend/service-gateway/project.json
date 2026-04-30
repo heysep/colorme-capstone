@@ -21,14 +21,14 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "commands": ["doppler run -- node dist/apps/backend/service-gateway/main.js"]
+        "commands": ["node --env-file=.env dist/apps/backend/service-gateway/main.js"]
       },
       "configurations": {
         "development": {
-          "commands": ["doppler run -- node dist/apps/backend/service-gateway/main.js"]
+          "commands": ["node --env-file=.env dist/apps/backend/service-gateway/main.js"]
         },
         "production": {
-          "commands": ["doppler run -- node dist/apps/backend/service-gateway/main.js"]
+          "commands": ["node --env-file=.env dist/apps/backend/service-gateway/main.js"]
         }
       }
     }

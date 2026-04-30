@@ -41,29 +41,7 @@ async function bootstrap() {
   const eventEmitter = app.get(EventEmitter2);
   const logger = new Logger('GatewayMain');
 
-  // 도플러 정보 출력
-  // ----------------------------------------
-  const dopplerConfig: string | undefined = configService.get('DOPPLER_CONFIG');
-  if (dopplerConfig) {
-    logger.log(`🚀 Doppler Config: ${dopplerConfig}`);
-  }
-  const dopplerEnvironment: string | undefined = configService.get(
-    'DOPPLER_ENVIRONMENT',
-  );
-  if (dopplerEnvironment) {
-    logger.log(`🚀 Doppler Environment: ${dopplerEnvironment}`);
-  }
-  const dopplerProject: string | undefined =
-    configService.get('DOPPLER_PROJECT');
-  if (dopplerProject) {
-    logger.log(`🚀 Doppler Project: ${dopplerProject}`);
-  }
-  const dopplerEnvVersion: string | undefined =
-    configService.get('ENV_VERSION');
-  if (dopplerEnvVersion) {
-    logger.log(`🚀 Doppler Env Version: ${dopplerEnvVersion}`);
-  }
-  // ----------------------------------------
+  const isProd = process.env.NODE_ENV === 'production';
 
   // 게이트웨이 정보 출력
   // ----------------------------------------
@@ -205,130 +183,23 @@ async function bootstrap() {
     }
   };
 
-  //
-  // Auth 서버 프록시 설정
-  //
-  const authProxyValue = parseProxyMiddlewareValue('GATEWAY_MAPPING_SERV_AUTH');
-  app.use(
-    [`/${authProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: authProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // Baseinfo 서버 프록시 설정
-  //
-  const baseinfoProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_BASEINFO',
-  );
-  app.use(
-    [`/${baseinfoProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: baseinfoProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // Sales 서버 프록시 설정
-  //
-  const salesProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_SALES',
-  );
-  app.use(
-    [`/${salesProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: salesProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // Research 서버 프록시 설정
-  //
-  const researchProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_RESEARCH',
-  );
-  app.use(
-    [`/${researchProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: researchProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // Production 서버 프록시 설정
-  //
-  const productionProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_PRODUCTION',
-  );
-  app.use(
-    [`/${productionProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: productionProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // File Manager 서버 프록시 설정
-  //
-  const fileManagerProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_FILE_MNG',
-  );
-  app.use(
-    [`/${fileManagerProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: fileManagerProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
-  //
-  // Stock 서버 프록시 설정
-  //
-  const stockProxyValue = parseProxyMiddlewareValue(
-    'GATEWAY_MAPPING_SERV_STOCK',
-  );
-  app.use(
-    [`/${stockProxyValue.fullInputUrl}`],
-    createProxyMiddleware<Request, Response>({
-      target: stockProxyValue.target,
-      changeOrigin: true,
-      secure: dopplerConfig === 'prd',
-      proxyTimeout: MAX_PROXY_TIMEOUT,
-      on: {
-        proxyReq: onProxyReq,
-      },
-    }),
-  );
+  const registerProxy = (envName: string) => {
+    const proxyValue = parseProxyMiddlewareValue(envName);
+    app.use(
+      [`/${proxyValue.fullInputUrl}`],
+      createProxyMiddleware<Request, Response>({
+        target: proxyValue.target,
+        changeOrigin: true,
+        secure: isProd,
+        proxyTimeout: MAX_PROXY_TIMEOUT,
+        on: { proxyReq: onProxyReq },
+      }),
+    );
+  };
+
+  registerProxy('GATEWAY_MAPPING_SERV_AUTH');
+  registerProxy('GATEWAY_MAPPING_SERV_FILE_MNG');
+  registerProxy('GATEWAY_MAPPING_SERV_PERSONAL_COLOR');
   // ===========================<<< 리버스 프록시 설정 >>>=========================================
 
   // 쿠키 파서 미들웨어 설정

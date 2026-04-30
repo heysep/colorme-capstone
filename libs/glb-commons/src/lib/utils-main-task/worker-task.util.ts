@@ -135,31 +135,6 @@ export class WorkerTaskUtil {
     );
     // ----------------------------------------
 
-    // 도플러 정보 출력
-    // ----------------------------------------
-    const dopplerConfig: string | undefined =
-      configService.get('DOPPLER_CONFIG');
-    if (dopplerConfig) {
-      this.logger.log(`🚀 Doppler Config: ${dopplerConfig}`);
-    }
-    const dopplerEnvironment: string | undefined = configService.get(
-      'DOPPLER_ENVIRONMENT',
-    );
-    if (dopplerEnvironment) {
-      this.logger.log(`🚀 Doppler Environment: ${dopplerEnvironment}`);
-    }
-    const dopplerProject: string | undefined =
-      configService.get('DOPPLER_PROJECT');
-    if (dopplerProject) {
-      this.logger.log(`🚀 Doppler Project: ${dopplerProject}`);
-    }
-    const dopplerEnvVersion: string | undefined =
-      configService.get('ENV_VERSION');
-    if (dopplerEnvVersion) {
-      this.logger.log(`🚀 Doppler Env Version: ${dopplerEnvVersion}`);
-    }
-    // ----------------------------------------
-
     // 모든 마이크로서비스를 동시에 시작
     await app.startAllMicroservices();
     // HTTP 서버도 동시에 listen
