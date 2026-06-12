@@ -176,7 +176,7 @@ export function TryOnPanel({
           AI 가상 피팅
         </h2>
         <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent">
-          Gemini 이미지 생성
+          AI 이미지 생성
         </span>
       </div>
 

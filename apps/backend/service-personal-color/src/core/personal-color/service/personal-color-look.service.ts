@@ -25,6 +25,7 @@ import {
 import { PersonalColorError } from '../error/personal-color.error';
 import { PcPalette, PcSeasonCode } from '../types/personal-color.types';
 import { GeminiTryOnProviderService } from './gemini-try-on-provider.service';
+import { OpenAiTryOnProviderService } from './openai-try-on-provider.service';
 import { PersonalColorCatalogService } from './personal-color-catalog.service';
 import { PersonalColorGuestSessionService } from './personal-color-guest-session.service';
 import { PersonalColorShareService } from './personal-color-share.service';
@@ -44,6 +45,7 @@ export class PersonalColorLookService {
     private readonly personalColorCatalogService: PersonalColorCatalogService,
     private readonly personalColorStylingService: PersonalColorStylingService,
     private readonly geminiTryOnProviderService: GeminiTryOnProviderService,
+    private readonly openAiTryOnProviderService: OpenAiTryOnProviderService,
     private readonly objectStorageUploadService: ObjectStorageUploadService,
     private readonly objectStorageDownloadService: ObjectStorageDownloadService,
     private readonly personalColorShareService: PersonalColorShareService,
@@ -109,7 +111,7 @@ export class PersonalColorLookService {
       },
       recommendationSnapshot: recommendations as any,
       providerJobId: null,
-      providerName: 'GEMINI',
+      providerName: this.resolveTryOnProviderName(),
       shareToken: null,
       savedYn: false,
       description: null,
@@ -280,7 +282,12 @@ export class PersonalColorLookService {
     look.status = PcSavedLookStatus.TRYON_PROCESSING;
     await this.savedLookRepository.save(look);
 
-    const tryOnResult = await this.geminiTryOnProviderService.generateTryOn({
+    const provider =
+      this.resolveTryOnProviderName() === 'OPENAI'
+        ? this.openAiTryOnProviderService
+        : this.geminiTryOnProviderService;
+
+    const tryOnResult = await provider.generateTryOn({
       personImage: personFile,
       topImage: {
         ...topFile,
@@ -316,13 +323,20 @@ export class PersonalColorLookService {
     });
 
     look.providerJobId = tryOnResult.providerJobId;
-    look.providerName = 'GEMINI';
+    look.providerName = this.resolveTryOnProviderName();
     look.status = PcSavedLookStatus.TRYON_COMPLETED;
     look.tryOnImageUrl = this.personalColorUrlService.buildFileDownloadUrl(
       uploadedResult.data.uploadEntityResult.storageName,
     );
 
     await this.savedLookRepository.save(look);
+  }
+
+  /** 가상 피팅 이미지 생성 프로바이더 선택 (기본 GEMINI, PC_TRYON_PROVIDER=OPENAI 지원) */
+  private resolveTryOnProviderName(): 'GEMINI' | 'OPENAI' {
+    return (process.env.PC_TRYON_PROVIDER ?? 'GEMINI').toUpperCase() === 'OPENAI'
+      ? 'OPENAI'
+      : 'GEMINI';
   }
 
   private async getUploadFileBufferById(fileId: string) {

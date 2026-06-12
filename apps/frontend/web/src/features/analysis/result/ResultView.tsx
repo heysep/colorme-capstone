@@ -144,7 +144,7 @@ export function ResultView() {
   return (
     <div className="section-shell">
       <div className="z-10 mx-auto flex w-full max-w-6xl flex-col gap-8">
-        {/* Top back */}
+        {/* Top bar */}
         <div className="flex items-center justify-between">
           <button
             type="button"
@@ -170,6 +170,32 @@ export function ResultView() {
             </svg>
             돌아가기
           </button>
+
+          {phase === 'completed' && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={startNewAnalysis}
+              className="flex items-center gap-2 rounded-full px-5 font-bold"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-4 w-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
+              다른 사진으로 새 분석
+            </Button>
+          )}
         </div>
 
         {/* 분석 진행 중 */}
@@ -423,17 +449,6 @@ export function ResultView() {
               />
             )}
 
-            <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-gray-100 pt-6 dark:border-[var(--color-auth-divider)]">
-              <Button
-                type="button"
-                variant="primary"
-                size="lg"
-                onClick={startNewAnalysis}
-                className="flex h-12 items-center justify-center rounded-2xl px-6 py-0 text-base font-bold leading-none"
-              >
-                새로운 분석 시작하기
-              </Button>
-            </footer>
           </>
         )}
       </div>

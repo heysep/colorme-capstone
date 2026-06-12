@@ -35,10 +35,16 @@ GEMINI_API_KEY="발급받은_키"        # 비어있으면 분석/가상피팅�
 선택 설정:
 
 ```bash
-GEMINI_ANALYSIS_MODEL="gemini-2.5-flash"            # 기본값
-GEMINI_IMAGE_MODEL="gemini-3.1-flash-image-preview" # 모델 404 에러 시 다른 이미지 모델로 교체
+GEMINI_ANALYSIS_MODEL="gemini-2.5-flash"            # 분석 모델 (무료 티어 가능)
+PC_TRYON_PROVIDER="OPENAI"                          # 가상 피팅 프로바이더 (GEMINI | OPENAI)
+OPENAI_API_KEY="..."                                # PC_TRYON_PROVIDER=OPENAI 일 때 필요
+OPENAI_IMAGE_MODEL="gpt-image-1"                    # 기본값
+GEMINI_IMAGE_MODEL="gemini-2.5-flash-image"         # PC_TRYON_PROVIDER=GEMINI 일 때 사용
 NEXT_PUBLIC_GATEWAY_ORIGIN="http://localhost:3300"  # 프론트가 호출할 게이트웨이 주소
 ```
+
+> ⚠️ Gemini **이미지 생성** 모델은 무료 티어 쿼터가 0이라 결제 등록 없이는 429가 난다.
+> 분석(텍스트)은 무료로 동작하므로, 가상 피팅만 OpenAI(gpt-image)로 돌리는 구성을 기본으로 한다.
 
 ## 4. 시드 데이터 (최초 1회)
 
@@ -109,7 +115,7 @@ curl $BASE/share/<shareToken>   # 인증 불필요 (공유 페이지가 사용)
 | 증상 | 원인/해결 |
 |------|----------|
 | 분석이 항상 FAILED | `GEMINI_API_KEY` 미설정. `.env` 채우고 personal-color 서비스 재시작 |
-| 가상 피팅만 FAILED | 이미지 모델 ID 문제 가능성 → `GEMINI_IMAGE_MODEL` 교체 |
+| 가상 피팅만 FAILED | Gemini 무료 키는 이미지 생성 쿼터 0 (429) → `PC_TRYON_PROVIDER="OPENAI"` + OpenAI 키 사용, 또는 Google 결제 등록 |
 | 업로드 직후 이미지 404 | 저장 직후 짧은 반영 지연. 프론트가 자동 재시도하므로 잠시 대기 |
 | 추천 의상 이미지 전부 깨짐 (504) | 코드 수정 후 watch 재빌드 중 서비스가 죽는 경우 있음. `lsof -i :3302`로 확인 후 해당 서비스 재시작 |
 | 서비스 기동 실패 | Docker 인프라(MySQL/Redis/RabbitMQ/MinIO) 기동 여부 확인 |

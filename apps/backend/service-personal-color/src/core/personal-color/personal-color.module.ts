@@ -9,6 +9,7 @@ import { PersonalColorDefaultController } from './controller/personal-color-defa
 import { GeminiApiClientService } from './service/gemini-api-client.service';
 import { GeminiPersonalColorProviderService } from './service/gemini-personal-color-provider.service';
 import { GeminiTryOnProviderService } from './service/gemini-try-on-provider.service';
+import { OpenAiTryOnProviderService } from './service/openai-try-on-provider.service';
 import { PersonalColorAnalysisService } from './service/personal-color-analysis.service';
 import { PersonalColorAuthService } from './service/personal-color-auth.service';
 import { PersonalColorCatalogService } from './service/personal-color-catalog.service';
@@ -34,6 +35,7 @@ import { PersonalColorUrlService } from './service/personal-color-url.service';
     GeminiApiClientService,
     GeminiPersonalColorProviderService,
     GeminiTryOnProviderService,
+    OpenAiTryOnProviderService,
     PersonalColorGuestSessionService,
     PersonalColorCatalogService,
     PersonalColorToneScoringService,
