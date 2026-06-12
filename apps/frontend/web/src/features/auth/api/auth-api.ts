@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-// 기본 API 설정
-// 실제 게이트웨이 포트에 따라 조정 필요 (기본 3000으로 가정)
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+// 게이트웨이 경유 auth 서비스 베이스 URL
+const GATEWAY_ORIGIN =
+  process.env.NEXT_PUBLIC_GATEWAY_ORIGIN ?? 'http://localhost:3300';
+const API_BASE_URL = `${GATEWAY_ORIGIN}/api/serv/auth`;
 
 const authApi = axios.create({
   baseURL: API_BASE_URL,

@@ -1,6 +1,6 @@
 /**
  * 퍼스널 컬러 분석 온보딩 플로우의 sessionStorage 저장소.
- * @TODO: API (2026/04/18) — 서버 세션/업로드 API 연동 시 교체
+ * 사진/스타일 선택값과 서버 분석 세션(sessionToken, analysisId)을 함께 보관한다.
  */
 
 export type StyleKey =
@@ -15,18 +15,29 @@ export type AnalysisState = {
   styles: StyleKey[];
   photoDataUrl: string | null;
   includePreference: boolean;
+  /** 백엔드 게스트 세션 토큰 (x-pc-session-token) */
+  sessionToken: string | null;
+  /** 진행 중/완료된 분석 ID */
+  analysisId: number | null;
 };
 
 const KEY = 'colorme_analysis';
 
+const EMPTY_STATE: AnalysisState = {
+  styles: [],
+  photoDataUrl: null,
+  includePreference: true,
+  sessionToken: null,
+  analysisId: null,
+};
+
 const isBrowser = () => typeof window !== 'undefined';
 
 const readState = (): AnalysisState => {
-  if (!isBrowser())
-    return { styles: [], photoDataUrl: null, includePreference: true };
+  if (!isBrowser()) return { ...EMPTY_STATE };
   try {
     const raw = window.sessionStorage.getItem(KEY);
-    if (!raw) return { styles: [], photoDataUrl: null, includePreference: true };
+    if (!raw) return { ...EMPTY_STATE };
     const parsed = JSON.parse(raw);
     return {
       styles: Array.isArray(parsed.styles) ? parsed.styles : [],
@@ -36,9 +47,13 @@ const readState = (): AnalysisState => {
         typeof parsed.includePreference === 'boolean'
           ? parsed.includePreference
           : true,
+      sessionToken:
+        typeof parsed.sessionToken === 'string' ? parsed.sessionToken : null,
+      analysisId:
+        typeof parsed.analysisId === 'number' ? parsed.analysisId : null,
     };
   } catch {
-    return { styles: [], photoDataUrl: null, includePreference: true };
+    return { ...EMPTY_STATE };
   }
 };
 
@@ -53,14 +68,23 @@ export const analysisStorage = {
     writeState({ ...readState(), styles });
   },
   setPhoto(photoDataUrl: string | null) {
-    writeState({ ...readState(), photoDataUrl });
+    // 사진이 바뀌면 이전 분석 결과는 무효화한다.
+    writeState({ ...readState(), photoDataUrl, analysisId: null });
   },
   setIncludePreference(includePreference: boolean) {
     writeState({ ...readState(), includePreference });
   },
+  setAnalysisSession(sessionToken: string, analysisId: number) {
+    writeState({ ...readState(), sessionToken, analysisId });
+  },
+  clearAnalysis() {
+    writeState({ ...readState(), analysisId: null });
+  },
   reset() {
     if (!isBrowser()) return;
-    window.sessionStorage.removeItem(KEY);
+    const { sessionToken } = readState();
+    // 게스트 세션 토큰은 유지해 같은 사용자로 이어서 분석한다.
+    writeState({ ...EMPTY_STATE, sessionToken });
   },
 };
 
