@@ -9,7 +9,8 @@
     "serve:auth": "nx run service-auth:serve",
     "serve:gateway": "nx run service-gateway:serve",
     "serve:file-mng": "nx run service-file-mng:serve",
-    "serve:personal-color": "nx run service-personal-color:serve"
+    "serve:personal-color": "nx run service-personal-color:serve",
+    "seed:personal-color": "node tools/scripts/seed-personal-color.mjs"
   },
   "private": true,
   "dependencies": {
