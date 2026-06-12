@@ -77,6 +77,10 @@ export const analysisStorage = {
   setAnalysisSession(sessionToken: string, analysisId: number) {
     writeState({ ...readState(), sessionToken, analysisId });
   },
+  /** 로그인/회원가입으로 발급된 회원 세션 토큰을 분석 플로우에 적용 */
+  adoptSessionToken(sessionToken: string) {
+    writeState({ ...readState(), sessionToken, analysisId: null });
+  },
   clearAnalysis() {
     writeState({ ...readState(), analysisId: null });
   },

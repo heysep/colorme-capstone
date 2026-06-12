@@ -191,6 +191,57 @@ export const pcApi = {
   },
 };
 
+export type PcAuthProfile = {
+  sessionToken: string;
+  userId: string;
+  userName: string;
+  userCountry: string | null;
+  seasonName: string | null;
+};
+
+/** 회원가입 / 로그인 / 프로필 (service-personal-color auth) */
+export const pcAuthApi = {
+  /**
+   * 회원가입. 게스트 세션 토큰을 넘기면 해당 게스트의 분석 이력이
+   * 새 계정으로 승계된다.
+   */
+  async signup(
+    body: {
+      userId: string;
+      password: string;
+      userName: string;
+      userCountry?: string;
+    },
+    guestSessionToken?: string | null,
+  ): Promise<PcAuthProfile> {
+    const res = await pcClient.post<ApiEnvelope<PcAuthProfile>>(
+      `${PC_BASE}/auth/signup`,
+      body,
+      { headers: sessionHeaders(guestSessionToken) },
+    );
+    return res.data.data;
+  },
+
+  async login(body: {
+    userId: string;
+    password: string;
+  }): Promise<PcAuthProfile> {
+    const res = await pcClient.post<ApiEnvelope<PcAuthProfile>>(
+      `${PC_BASE}/auth/login`,
+      body,
+    );
+    return res.data.data;
+  },
+
+  async me(sessionToken: string): Promise<PcAuthProfile> {
+    const res = await pcClient.get<ApiEnvelope<PcAuthProfile>>(
+      `${PC_BASE}/auth/me`,
+      { headers: sessionHeaders(sessionToken) },
+    );
+    return res.data.data;
+  },
+};
+
 /** 서버 에러 응답에서 사용자에게 보여줄 메시지 추출 */
 export const extractApiErrorMessage = (error: unknown): string => {
   if (axios.isAxiosError(error)) {

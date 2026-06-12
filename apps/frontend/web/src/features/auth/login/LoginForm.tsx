@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { authStorage } from '../lib/auth-storage';
 import { analysisStorage } from '@/features/analysis/lib/analysis-storage';
-// @TODO: API (2026/04/18) — 실제 백엔드 로그인 연동 시 아래 import 및 관련 로직 복구
-// import { loginApi, tenantApi } from '../api/auth-api';
+import { extractApiErrorMessage, pcAuthApi } from '@/features/analysis/api/pc-api';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.png';
 import naverLogo from '@/assets/icons/naverLogo.png';
@@ -22,32 +21,6 @@ export function LoginForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', description: '' });
 
-  // @TODO: API (2026/04/18) — 테넌트 조회/연동 로직 전체 주석 처리
-  // const [tenantInfo, setTenantInfo] = useState<any>(null);
-  // useEffect(() => {
-  //   const resolveTenant = async () => {
-  //     try {
-  //       const urlParams = new URLSearchParams(window.location.search);
-  //       const tenantCodeParam = urlParams.get('tenant');
-  //       if (tenantCodeParam) {
-  //         const result = await tenantApi.getTenantByCode(tenantCodeParam);
-  //         if (result.data) {
-  //           setTenantInfo(result.data);
-  //           return;
-  //         }
-  //       }
-  //       const hostname = window.location.hostname;
-  //       if (hostname !== 'localhost' && !hostname.endsWith('colorme.com')) {
-  //         const result = await tenantApi.getTenantByDomain(hostname);
-  //         if (result.data) setTenantInfo(result.data);
-  //       }
-  //     } catch (error) {
-  //       console.error('테넌트 조회 실패:', error);
-  //     }
-  //   };
-  //   resolveTenant();
-  // }, []);
-
   const openInfoModal = (title: string, description: string) => {
     setModalContent({ title, description });
     setIsModalOpen(true);
@@ -57,31 +30,15 @@ export function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // @TODO: API (2026/04/18) — 실제 로그인 API 호출로 교체 필요
-      // let result;
-      // if (tenantInfo?.code) {
-      //   result = await loginApi.loginTenant({ userId: email, password }, tenantInfo.code);
-      // } else {
-      //   result = await loginApi.loginRoot({ userId: email, password });
-      // }
+      const profile = await pcAuthApi.login({ userId: email, password });
 
-      const user = authStorage.verifyCredentials(email, password);
-      if (!user) {
-        const exists = authStorage.existsEmail(email);
-        openInfoModal(
-          '로그인 실패',
-          exists
-            ? '비밀번호가 일치하지 않습니다.'
-            : '가입된 계정을 찾을 수 없습니다.\n회원가입을 진행해 주세요.'
-        );
-        return;
-      }
-
-      authStorage.setSession(user.email);
+      authStorage.setMemberSession(profile);
+      // 분석 플로우를 회원 세션 토큰으로 초기화
       analysisStorage.reset();
+      analysisStorage.adoptSessionToken(profile.sessionToken);
       router.push('/analysis/style');
-    } catch (error: any) {
-      openInfoModal('로그인 실패', error?.message ?? '알 수 없는 오류가 발생했습니다.');
+    } catch (error) {
+      openInfoModal('로그인 실패', extractApiErrorMessage(error));
     } finally {
       setIsLoading(false);
     }

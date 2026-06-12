@@ -112,7 +112,7 @@ curl $BASE/share/<shareToken>   # 인증 불필요 (공유 페이지가 사용)
 | 가상 피팅만 FAILED | 이미지 모델 ID 문제 가능성 → `GEMINI_IMAGE_MODEL` 교체 |
 | 업로드 직후 이미지 404 | 저장 직후 짧은 반영 지연. 프론트가 자동 재시도하므로 잠시 대기 |
 | 서비스 기동 실패 | Docker 인프라(MySQL/Redis/RabbitMQ/MinIO) 기동 여부 확인 |
-| 로그인/회원가입 | 데모용 브라우저 세션 저장(목업). 분석/피팅 플로우는 게스트 세션 기반이라 로그인 불필요 |
+| 로그인 실패 | 회원가입 먼저 필요 (DB 저장 실인증). 비밀번호: 8자+영문+숫자+특수문자 |
 
 ## 9. 아키텍처 요약
 
@@ -124,6 +124,8 @@ Next.js(:3000) ──> Gateway(:3300, /api/serv/*) ──┬─> service-auth(:3
                                               MySQL(Galera) · RabbitMQ · Redis
 ```
 
-- 인증: 게스트 세션 토큰(`x-pc-session-token`) — 회원가입 없이 전체 플로우 사용
+- 인증: 세션 토큰(`x-pc-session-token`) 기반. 게스트로 전체 플로우 사용 가능하며,
+  회원가입(`POST /auth/signup`, bcrypt 해시 저장) 시 게스트 분석 이력이 계정으로 승계됨.
+  로그인(`POST /auth/login`)은 토큰을 재발급(회전)함. 프로필 조회는 `GET /auth/me`.
 - 분석/피팅 모두 **비동기 처리 + 폴링** 패턴 (업로드 즉시 응답 → 백그라운드 Gemini 호출)
 - 의상 추천: Gemini가 판정한 시즌/성별 + 팔레트 색상 거리 + 스타일 태그 매칭 점수 기반

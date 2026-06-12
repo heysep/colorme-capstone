@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { COUNTRIES, type CountryCode, authStorage } from '../lib/auth-storage';
-// @TODO: API (2026/04/18) — 실제 회원가입 API 연동 시 signupApi import 및 호출부 복구
+import { analysisStorage } from '@/features/analysis/lib/analysis-storage';
+import { extractApiErrorMessage, pcAuthApi } from '@/features/analysis/api/pc-api';
 
 type FormState = {
   email: string;
@@ -77,7 +78,7 @@ export function SignupForm() {
     setErrorOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!canSubmit) return;
 
@@ -92,20 +93,24 @@ export function SignupForm() {
 
     setSubmitting(true);
     try {
-      // @TODO: API (2026/04/18) — 실제 회원가입 API 호출로 교체
-      // const result = await signupApi.signup({ ... });
-      authStorage.createUser({
-        email: form.email,
-        password: form.password,
-        username: form.username,
-        country: form.country as CountryCode,
-      });
-      setSuccessOpen(true);
-    } catch (err: any) {
-      openError(
-        '회원가입 실패',
-        err?.message ?? '알 수 없는 오류가 발생했습니다.',
+      // 게스트로 분석한 이력이 있으면 그 세션을 계정으로 승계
+      const guestToken = analysisStorage.getState().sessionToken;
+      const profile = await pcAuthApi.signup(
+        {
+          userId: form.email,
+          password: form.password,
+          userName: form.username,
+          userCountry: form.country || undefined,
+        },
+        guestToken,
       );
+
+      // 가입 즉시 로그인 상태로 전환
+      authStorage.setMemberSession(profile);
+      analysisStorage.adoptSessionToken(profile.sessionToken);
+      setSuccessOpen(true);
+    } catch (err) {
+      openError('회원가입 실패', extractApiErrorMessage(err));
     } finally {
       setSubmitting(false);
     }
@@ -116,9 +121,9 @@ export function SignupForm() {
     router.push('/');
   };
 
-  const goLogin = () => {
+  const goAnalysis = () => {
     setSuccessOpen(false);
-    router.push('/login');
+    router.push('/analysis/style');
   };
 
   return (
@@ -272,16 +277,16 @@ export function SignupForm() {
         isOpen={successOpen}
         onClose={() => setSuccessOpen(false)}
         title="회원가입이 완료되었습니다."
-        description="로그인 페이지로 바로 이동할까요?"
+        description={'가입한 계정으로 자동 로그인되었습니다.\n바로 퍼스널 컬러 분석을 시작해 볼까요?'}
         secondaryAction={{
           label: '메인페이지로 이동',
           variant: 'outline',
           onClick: goHome,
         }}
         primaryAction={{
-          label: '로그인 하기',
+          label: '분석 시작하기',
           variant: 'primary',
-          onClick: goLogin,
+          onClick: goAnalysis,
         }}
       />
 

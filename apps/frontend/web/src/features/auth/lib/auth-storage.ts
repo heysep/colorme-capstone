@@ -1,77 +1,49 @@
 /**
- * sessionStorage 기반 임시 인증 저장소.
- * 실제 백엔드 연동 전까지 사용하는 목업 레이어.
- * @TODO: API (2026/04/18) — 실제 서버 인증으로 교체 필요
+ * 회원 세션 저장소 (localStorage).
+ * 서버(service-personal-color auth API)가 발급한 세션 토큰과 프로필을 보관한다.
  */
 
 export type CountryCode = 'KR' | 'US' | 'JP' | 'CN';
 
-export type StoredUser = {
-  email: string;
-  password: string;
-  username: string;
-  country: CountryCode;
+export type MemberSession = {
+  sessionToken: string;
+  userId: string; // 이메일
+  userName: string;
+  userCountry: string | null;
+  seasonName: string | null;
 };
 
-const USERS_KEY = 'colorme_users';
-const SESSION_KEY = 'colorme_session';
+const SESSION_KEY = 'colorme_member_session';
 
 const isBrowser = () => typeof window !== 'undefined';
 
-const readUsers = (): StoredUser[] => {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.sessionStorage.getItem(USERS_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as StoredUser[]) : [];
-  } catch {
-    return [];
-  }
-};
-
-const writeUsers = (users: StoredUser[]) => {
-  if (!isBrowser()) return;
-  window.sessionStorage.setItem(USERS_KEY, JSON.stringify(users));
-};
-
 export const authStorage = {
-  findUserByEmail(email: string): StoredUser | null {
-    return readUsers().find((u) => u.email === email) ?? null;
-  },
-
-  existsEmail(email: string): boolean {
-    return readUsers().some((u) => u.email === email);
-  },
-
-  createUser(user: StoredUser): void {
-    const users = readUsers();
-    if (users.some((u) => u.email === user.email)) {
-      throw new Error('이미 가입된 이메일입니다.');
-    }
-    users.push(user);
-    writeUsers(users);
-  },
-
-  verifyCredentials(email: string, password: string): StoredUser | null {
-    const user = readUsers().find((u) => u.email === email);
-    if (!user) return null;
-    return user.password === password ? user : null;
-  },
-
-  setSession(email: string): void {
+  setMemberSession(session: MemberSession): void {
     if (!isBrowser()) return;
-    window.sessionStorage.setItem(SESSION_KEY, email);
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   },
 
-  getSession(): string | null {
+  getMemberSession(): MemberSession | null {
     if (!isBrowser()) return null;
-    return window.sessionStorage.getItem(SESSION_KEY);
+    try {
+      const raw = window.localStorage.getItem(SESSION_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (
+        typeof parsed.sessionToken !== 'string' ||
+        typeof parsed.userId !== 'string'
+      ) {
+        return null;
+      }
+      return parsed as MemberSession;
+    } catch {
+      return null;
+    }
   },
 
   clearSession(): void {
     if (!isBrowser()) return;
-    window.sessionStorage.removeItem(SESSION_KEY);
+    window.localStorage.removeItem(SESSION_KEY);
   },
 };
 

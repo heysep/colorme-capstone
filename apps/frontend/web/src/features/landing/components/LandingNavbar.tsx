@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { siteConfig } from '@/lib/constants/site-config';
+import { authStorage, type MemberSession } from '@/features/auth/lib/auth-storage';
 import Link from 'next/link';
 
 const navLinks = [
@@ -16,6 +17,16 @@ function handleNavClick(id: string) {
 
 export function LandingNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [member, setMember] = useState<MemberSession | null>(null);
+
+  useEffect(() => {
+    setMember(authStorage.getMemberSession());
+  }, []);
+
+  const handleLogout = () => {
+    authStorage.clearSession();
+    setMember(null);
+  };
 
   return (
     <nav
@@ -47,15 +58,31 @@ export function LandingNavbar() {
             <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-300 group-hover:w-full" />
           </button>
         ))}
-        <Link href="/login">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-full px-6 font-bold text-primary transition-all hover:bg-primary/5 active:scale-95"
-          >
-            로그인
-          </Button>
-        </Link>
+        {member ? (
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-muted">
+              <span className="text-primary">{member.userName}</span>님
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="rounded-full px-6 font-bold text-primary transition-all hover:bg-primary/5 active:scale-95"
+            >
+              로그아웃
+            </Button>
+          </div>
+        ) : (
+          <Link href="/login">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full px-6 font-bold text-primary transition-all hover:bg-primary/5 active:scale-95"
+            >
+              로그인
+            </Button>
+          </Link>
+        )}
         <Button
           variant="primary"
           size="sm"
@@ -97,15 +124,29 @@ export function LandingNavbar() {
               {link.label}
             </button>
           ))}
-          <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+          {member ? (
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => {
+                handleLogout();
+                setMobileMenuOpen(false);
+              }}
               className="w-full rounded-2xl py-6 font-bold text-primary transition-all hover:bg-primary/5"
             >
-              로그인
+              {member.userName}님 · 로그아웃
             </Button>
-          </Link>
+          ) : (
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full rounded-2xl py-6 font-bold text-primary transition-all hover:bg-primary/5"
+              >
+                로그인
+              </Button>
+            </Link>
+          )}
           <Button
             variant="primary"
             size="sm"
