@@ -170,7 +170,13 @@ export function TryOnPanel({
   );
 
   return (
-    <section className="panel-card space-y-6">
+    <section
+      className={`panel-card space-y-6 transition-shadow duration-300 ${
+        canStart && phase === 'idle'
+          ? 'ring-2 ring-primary/40 shadow-2xl shadow-primary/20'
+          : ''
+      }`}
+    >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-black text-gray-900 sm:text-2xl dark:text-gray-100">
           AI 가상 피팅
@@ -183,18 +189,58 @@ export function TryOnPanel({
       {selectionSummary}
 
       {phase === 'idle' && (
-        <Button
+        <button
           type="button"
-          variant="cta"
-          size="lg"
           disabled={!canStart}
           onClick={startTryOn}
-          className="h-14 w-full rounded-2xl text-base font-black"
+          className={
+            canStart
+              ? 'relative flex h-16 w-full cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-indigo-500 to-accent text-lg font-black text-white shadow-xl shadow-primary/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/40 active:scale-[0.98]'
+              : 'flex h-16 w-full cursor-not-allowed items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 text-base font-bold text-gray-400 dark:border-white/10 dark:bg-white/5 dark:text-gray-500'
+          }
         >
-          {canStart
-            ? '선택한 코디로 가상 피팅 시작'
-            : '상의와 하의를 먼저 선택해 주세요'}
-        </Button>
+          {canStart ? (
+            <>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 animate-pulse bg-white/10"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"
+                />
+              </svg>
+              선택한 코디로 가상 피팅 시작
+            </>
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"
+                />
+              </svg>
+              위에서 상의와 하의를 먼저 선택해 주세요
+            </>
+          )}
+        </button>
       )}
 
       {phase === 'processing' && (
