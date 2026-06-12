@@ -215,6 +215,8 @@ async function bootstrap() {
       // CSP를 완전히 비활성화
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
+      // 다른 오리진(프론트 3000)에서 <img>로 파일 다운로드 응답을 사용할 수 있도록 허용
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
     }),
   );
   // ----------------------------------------
