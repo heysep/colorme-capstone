@@ -40,11 +40,11 @@ export class RnDefaultPcUserEntity extends RnBaseBaseMysqlEntity {
 
   @Column({
     type: 'varchar',
-    length: 20,
-    comment: '로그인 ID',
+    length: 100,
+    comment: '로그인 ID (이메일)',
     nullable: true,
     unique: true,
-    example: 'user001',
+    example: 'user@example.com',
   })
   userId: string | null;
 
@@ -59,7 +59,7 @@ export class RnDefaultPcUserEntity extends RnBaseBaseMysqlEntity {
 
   @Column({
     type: 'varchar',
-    length: 10,
+    length: 30,
     comment: '사용자 이름',
     nullable: true,
     example: '홍길동',

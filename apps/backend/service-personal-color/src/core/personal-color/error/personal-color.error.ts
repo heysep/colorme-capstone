@@ -80,4 +80,22 @@ export const PersonalColorError = {
     detail: 'Gemini 가상 피팅 생성 중 오류가 발생했습니다.',
     status: HttpStatus.INTERNAL_SERVER_ERROR,
   } as ICommonErrorCode,
+  AUTH_DUPLICATE_USER_ID: {
+    code: 'PC_AUTH_DUPLICATE_USER_ID',
+    message: '이미 가입된 이메일입니다.',
+    detail: '이미 가입된 이메일입니다.',
+    status: HttpStatus.CONFLICT,
+  } as ICommonErrorCode,
+  AUTH_ALREADY_REGISTERED: {
+    code: 'PC_AUTH_ALREADY_REGISTERED',
+    message: '이미 회원으로 등록된 세션입니다.',
+    detail: '이미 회원으로 등록된 세션입니다.',
+    status: HttpStatus.CONFLICT,
+  } as ICommonErrorCode,
+  AUTH_LOGIN_FAILED: {
+    code: 'PC_AUTH_LOGIN_FAILED',
+    message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+    detail: '이메일 또는 비밀번호가 올바르지 않습니다.',
+    status: HttpStatus.UNAUTHORIZED,
+  } as ICommonErrorCode,
 } as const;

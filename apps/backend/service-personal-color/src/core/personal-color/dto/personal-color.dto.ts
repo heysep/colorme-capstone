@@ -308,6 +308,86 @@ export class PcShareLookResponseDto {
   shareUrl: string;
 }
 
+export class PcSignupRequestDto {
+  @IsString({
+    min: 5,
+    max: 100,
+    propertyName: 'userId',
+    example: 'user@example.com',
+    description: '로그인 ID (이메일)',
+  })
+  userId: string;
+
+  @IsString({
+    min: 8,
+    max: 72,
+    propertyName: 'password',
+    example: 'P@ssw0rd!',
+    description: '비밀번호 (8자 이상, 영문+숫자+특수문자)',
+  })
+  password: string;
+
+  @IsString({
+    min: 1,
+    max: 30,
+    propertyName: 'userName',
+    example: 'colorme-user',
+    description: '사용자 이름',
+  })
+  userName: string;
+
+  @IsString({
+    min: 0,
+    max: 50,
+    propertyName: 'userCountry',
+    example: 'KR',
+    description: '국가 코드',
+    optional: true,
+  })
+  userCountry?: string;
+}
+
+export class PcLoginRequestDto {
+  @IsString({
+    min: 5,
+    max: 100,
+    propertyName: 'userId',
+    example: 'user@example.com',
+    description: '로그인 ID (이메일)',
+  })
+  userId: string;
+
+  @IsString({
+    min: 1,
+    max: 72,
+    propertyName: 'password',
+    example: 'P@ssw0rd!',
+    description: '비밀번호',
+  })
+  password: string;
+}
+
+export class PcAuthProfileResponseDto {
+  @ApiProperty({ description: '세션 토큰', example: 'pc-session-token' })
+  sessionToken: string;
+
+  @ApiProperty({ description: '로그인 ID (이메일)', example: 'user@example.com' })
+  userId: string;
+
+  @ApiProperty({ description: '사용자 이름', example: 'colorme-user' })
+  userName: string;
+
+  @ApiPropertyOptional({ description: '국가 코드', example: 'KR', nullable: true })
+  userCountry: string | null;
+
+  @ApiPropertyOptional({
+    description: '진단된 퍼스널 컬러 시즌명',
+    example: '봄 웜톤',
+    nullable: true,
+  })
+  seasonName: string | null;
+}
+
 export class PcSharedLookResponseDto {
   @ApiProperty({ description: '룩 ID', example: 1 })
   lookId: number;

@@ -4,11 +4,13 @@ import {
   TYPE_ORM_FOR_FEATURE_SUBMYSQL,
 } from '@capstone-project/glb-commons';
 import { Module } from '@nestjs/common';
+import { PersonalColorAuthDefaultController } from './controller/personal-color-auth-default.controller';
 import { PersonalColorDefaultController } from './controller/personal-color-default.controller';
 import { GeminiApiClientService } from './service/gemini-api-client.service';
 import { GeminiPersonalColorProviderService } from './service/gemini-personal-color-provider.service';
 import { GeminiTryOnProviderService } from './service/gemini-try-on-provider.service';
 import { PersonalColorAnalysisService } from './service/personal-color-analysis.service';
+import { PersonalColorAuthService } from './service/personal-color-auth.service';
 import { PersonalColorCatalogService } from './service/personal-color-catalog.service';
 import { PersonalColorGuestSessionService } from './service/personal-color-guest-session.service';
 import { PersonalColorLookService } from './service/personal-color-look.service';
@@ -26,8 +28,9 @@ import { PersonalColorUrlService } from './service/personal-color-url.service';
     TYPE_ORM_FOR_FEATURE,
     TYPE_ORM_FOR_FEATURE_SUBMYSQL,
   ],
-  controllers: [PersonalColorDefaultController],
+  controllers: [PersonalColorAuthDefaultController, PersonalColorDefaultController],
   providers: [
+    PersonalColorAuthService,
     GeminiApiClientService,
     GeminiPersonalColorProviderService,
     GeminiTryOnProviderService,
