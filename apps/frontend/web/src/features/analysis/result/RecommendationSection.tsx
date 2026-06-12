@@ -108,7 +108,7 @@ export function RecommendationSection({
               추천 가능한 {label} 아이템이 없습니다. 카탈로그 시드 데이터를 확인해 주세요.
             </p>
           ) : (
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {groups[key].map((item) => {
                 const selected = selection[key]?.itemId === item.itemId;
                 const preferred = matchesPreference(item, preferredStyles);

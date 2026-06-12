@@ -111,6 +111,7 @@ curl $BASE/share/<shareToken>   # 인증 불필요 (공유 페이지가 사용)
 | 분석이 항상 FAILED | `GEMINI_API_KEY` 미설정. `.env` 채우고 personal-color 서비스 재시작 |
 | 가상 피팅만 FAILED | 이미지 모델 ID 문제 가능성 → `GEMINI_IMAGE_MODEL` 교체 |
 | 업로드 직후 이미지 404 | 저장 직후 짧은 반영 지연. 프론트가 자동 재시도하므로 잠시 대기 |
+| 추천 의상 이미지 전부 깨짐 (504) | 코드 수정 후 watch 재빌드 중 서비스가 죽는 경우 있음. `lsof -i :3302`로 확인 후 해당 서비스 재시작 |
 | 서비스 기동 실패 | Docker 인프라(MySQL/Redis/RabbitMQ/MinIO) 기동 여부 확인 |
 | 로그인 실패 | 회원가입 먼저 필요 (DB 저장 실인증). 비밀번호: 8자+영문+숫자+특수문자 |
 

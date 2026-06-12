@@ -128,9 +128,11 @@ export function ResultView() {
     router.push('/analysis/upload');
   };
 
+  // 선택한 스타일 선호는 유지하고 사진/분석만 비워 바로 재촬영으로 보낸다.
   const startNewAnalysis = () => {
-    analysisStorage.reset();
-    router.push('/analysis/style');
+    analysisStorage.clearAnalysis();
+    analysisStorage.setPhoto(null);
+    router.push('/analysis/upload');
   };
 
   if (!state) {
